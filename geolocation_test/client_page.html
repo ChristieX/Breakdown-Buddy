@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Client Page</title>
+  <!-- Add Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+  <!-- Add Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+  <h1>Client Page</h1>
+
+  <h2>Client Geolocation</h2>
+  <p>Click the button below to get your geolocation:</p>
+  <button onclick="getClientLocation()">Get My Location</button>
+  
+  <!-- Add a div to serve as the container for the Leaflet map -->
+  <div id="map" style="height: 400px;"></div>
+
+  <script>
+    let map;
+    let clientLatitude; // Client's latitude
+    let clientLongitude; // Client's longitude
+
+    // Function to get client's geolocation and display on a Leaflet map
+    function getClientLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            clientLatitude = position.coords.latitude;
+            clientLongitude = position.coords.longitude;
+
+            // Check if the client's location is available
+            if (clientLatitude && clientLongitude) {
+              // Create a map centered on the client's location
+              map = L.map('map').setView([clientLatitude, clientLongitude], 15);
+
+              // Add the OpenStreetMap base layer to the map
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              }).addTo(map);
+
+              // Place a marker on the map for the client's location
+              L.marker([clientLatitude, clientLongitude]).addTo(map)
+                .bindPopup("Your Location")
+                .openPopup();
+                
+              // Send the latitude and longitude data to the server to store it in the database
+              const requestData = {
+                latitude: clientLatitude,
+                longitude: clientLongitude
+              };
+
+              fetch('save_location.php', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+              })
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+              })
+              .catch(error => {
+                console.error('Error saving location:', error);
+              });
+            } else {
+              console.error("Client's geolocation is not available.");
+            }
+          },
+          (error) => {
+            console.error("Error getting geolocation:", error.message);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    }
+  </script>
+</body>
+</html>
