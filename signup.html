@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Popup Example</title>
+    <style>
+      body {
+        background-image: url("../images/signin_bg.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        min-height: 100vh;
+      }
+      h2 {
+        text-align: center;
+        color: white;
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .popup {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: rgba(133, 98, 98, 0.241);
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .popup h2 {
+        margin-top: 0;
+      }
+
+      #heading {
+        display: flex;
+        justify-content: center;
+      }
+      .popup button {
+        margin: 10px;
+        padding: 8px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .options-container {
+        display: flex;
+      }
+      .option {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5px;
+      }
+      img {
+        width: 150px;
+        height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="overlay">
+      <div class="popup">
+        <div id="heading">
+          <h2>Are you a mechanic or a customer?</h2>
+        </div>
+        <div class="options-container">
+          <div class="option">
+            <img
+              src="../images/mechanic.jpg"
+              alt="Customer"
+              class="user-image"
+            />
+            <br />
+            <button id="mechanicBtn">Mechanic</button>
+          </div>
+          <div class="option">
+            <img
+              src="../images/customer.jpg"
+              alt="Customer"
+              class="user-image"
+            />
+            <br />
+            <button id="customerBtn">Customer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var mechanicBtn = document.getElementById("mechanicBtn");
+      var customerBtn = document.getElementById("customerBtn");
+
+      mechanicBtn.addEventListener("click", function () {
+        // Handle mechanic selection
+        alert("You selected 'Mechanic'");
+        window.location.href = "mechanic_docs.html";
+      });
+
+      customerBtn.addEventListener("click", function () {
+        // Handle customer selection
+        alert("You selected 'Customer'");
+        window.location.href = "customer_docs.html";
+      });
+    </script>
+  </body>
+</html>

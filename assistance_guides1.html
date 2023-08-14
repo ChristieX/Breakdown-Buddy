@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Problem Assistance Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Slackside+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #780000;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        width: 100vw;
+      }
+
+      h1 {
+        margin: 0;
+      }
+      header h1 {
+        font-family: "Cherry Bomb One", cursive;
+      }
+      nav {
+        background-color: #c1121f;
+        padding: 10px;
+        position: sticky;
+        width: 100vw;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        display: inline;
+        margin-right: 10px;
+      }
+
+      li a {
+        color: #fff;
+        text-decoration: none;
+        padding: 5px 10px;
+      }
+
+      li a:hover {
+        background-color: #730b12;
+      }
+      marquee {
+        font-family: "Slackside One", cursive;
+        font-size: 50px;
+        padding: 0;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      h2 {
+        text-align: center;
+        color: #4d080d;
+      }
+
+      .search-container {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      #result-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+      }
+
+      .video-card {
+        border: 1px solid #ddd;
+        padding: 10px;
+      }
+
+      .blog-card {
+        border: 1px solid #ddd;
+        padding: 10px;
+      }
+
+      .card-title {
+        color: #c1121f;
+        margin-bottom: 10px;
+      }
+
+      .card-description {
+        margin-bottom: 10px;
+      }
+
+      .card-link {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>BREAKDOWN BUDDY</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="homepage.html">Home</a></li>
+        <li><a href="request_assistance.html">Request Assistance</a></li>
+        <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+        <li><a href="contacts.html">Emergency Contacts</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+      </ul>
+    </nav>
+    <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+    <main>
+      <h2>Car Problem Assistance Guide</h2>
+
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search..." />
+        <button onclick="search()">Search</button>
+      </div>
+
+      <div id="result-container"></div>
+    </main>
+
+    <script>
+      function search() {
+        var input = document.getElementById("search-input").value.toLowerCase();
+        var resultContainer = document.getElementById("result-container");
+        resultContainer.innerHTML = "";
+
+        // Example data (Replace with your actual data)
+        var data = [
+          {
+            type: "video",
+            title: "Engine Overheating",
+            description:
+              "Common causes of engine overheating and how to fix it.",
+            link: "https://www.youtube.com/embed/xyz123",
+          },
+          {
+            type: "blog",
+            title: "Engine Overheating",
+            description:
+              "Detailed guide on engine overheating and troubleshooting steps.",
+            link: "https://example.com/blog/engine-overheating",
+          },
+          {
+            type: "video",
+            title: "Drained battery-jump start",
+            description:
+              "Jump start a car. Anyone who drives should know how to safely jump start their car because one day your battery will be dead, whether you left your lights on or your battery goes bad",
+            link: 'https://www.youtube.com/embed/Y9ROz1yPKbg"',
+          },
+          {
+            type: "video",
+            title: "Car pulling to one side",
+            description:
+              "If it happens, get your car checked out as soon as possible. Here’s a few reasons why your car might be pulling to one side.",
+            link: "https://youtu.be/TdBAkjkrsB8",
+          },
+          {
+            type: "video",
+            title: "Uneven tire wear",
+            description:
+              "If it happens, get your car checked out as soon as possible. Here’s a few reasons why your car might be pulling to one side.",
+            link: "https://youtu.be/JyONPHidcAA",
+          },
+        ];
+
+        var filteredData;
+        if (input === "") {
+          filteredData = data;
+        } else {
+          filteredData = data.filter(function (item) {
+            return item.title.toLowerCase().includes(input);
+          });
+        }
+
+        if (filteredData.length === 0) {
+          resultContainer.innerHTML = "<p>No results found.</p>";
+        } else {
+          filteredData.forEach(function (item) {
+            var card = document.createElement("div");
+            card.classList.add("card");
+            if (item.type === "video") {
+              card.classList.add("video-card");
+            } else if (item.type === "blog") {
+              card.classList.add("blog-card");
+            }
+
+            var title = document.createElement("h2");
+            title.classList.add("card-title");
+            title.textContent = item.title;
+
+            var description = document.createElement("p");
+            description.classList.add("card-description");
+            description.textContent = item.description;
+
+            var link = document.createElement("a");
+            link.classList.add("card-link");
+            link.href = item.link;
+            link.textContent = "View";
+
+            card.appendChild(title);
+            card.appendChild(description);
+            card.appendChild(link);
+
+            resultContainer.appendChild(card);
+          });
+        }
+      }
+
+      // Initial call to display all contents
+      search();
+    </script>
+  </body>
+</html>

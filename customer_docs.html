@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Breakdown Documentation</title>
+    <style>
+      
+      body {
+        background-color: rgba(0, 0, 0, 0.855);
+        color: #000000;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #cce6f4;
+        border-radius: 10px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-top: 50px;
+        color: black;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="submit"] {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: none;
+      }
+
+      input[type="submit"] {
+        background-color: rgba(11, 11, 63, 0.514);
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: rgba(11, 11, 63, 0.945);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <h1>Customer Vehicle Breakdown Documentation</h1>
+        <form>
+          <label for="driving_license">Driving License:</label>
+          <input
+            type="file"
+            id="driving_license"
+            name="driving_license"
+            required
+          />
+          <br><br>
+          <label for="vehicle_number">Vehicle Number:</label>
+          <input
+            type="text"
+            id="vehicle_number"
+            name="vehicle_number"
+            required
+          />
+
+          <input type="submit" value="Submit" id="SubmitBtn"/>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    var SubmitBtn = document.getElementById("SubmitBtn");
+
+SubmitBtn.addEventListener("click", function () {
+window.location.href = "homepage.html";
+});
+  </script>
+</html>

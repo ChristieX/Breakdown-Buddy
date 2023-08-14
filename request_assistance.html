@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Request Assistance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Slackside+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #780000;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        width: 100vw;
+      }
+
+      h1 {
+        margin: 0;
+      }
+      header h1 {
+        font-family: "Cherry Bomb One", cursive;
+      }
+      nav {
+        background-color: #c1121f;
+        padding: 10px;
+        position: sticky;
+        width: 100vw;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        display: inline;
+        margin-right: 10px;
+      }
+
+      li a {
+        color: #fff;
+        text-decoration: none;
+        padding: 5px 10px;
+      }
+
+      li a:hover {
+        background-color: #730b12;
+      }
+      marquee {
+        font-family: "Slackside One", cursive;
+        font-size: 50px;
+        padding: 0;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+
+      form {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      label,
+      input {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+
+      input[type="submit"] {
+        background-color: #4caf50;
+        color: rgb(248, 241, 241);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      .mechanic-list {
+        margin-top: 20px;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .mechanic-list li {
+        margin-bottom: 10px;
+      }
+      .mechanic-list li span {
+        font-weight: bold;
+      }
+      body {
+        background-color: rgb(234, 230, 235);
+        background-image: url("../images/background1.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+      }
+      #popup {
+        background-color: rgba(245, 240, 240, 0.596);
+        max-width: 449px;
+        max-height: 400px;
+
+        margin: 0 auto;
+      }
+      #mechanic-table {
+        background-color: rgba(255, 255, 255, 0.536);
+        border: black solid 4px;
+        width: 100%;
+      }
+      th {
+        text-align: left;
+        border: 1px solid;
+      }
+      table,
+      td {
+        border: 1px solid;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>BREAKDOWN BUDDY</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="homepage.html">Home</a></li>
+        <li><a href="request_assistance.html">Request Assistance</a></li>
+        <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+        <li><a href="contacts.html">Emergency Contacts</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+      </ul>
+    </nav>
+    <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+    <main>
+      <div id="popup">
+        <h1>Request Assistance</h1>
+        <form id="search-form">
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location" />
+
+          <input type="submit" value="Get Mechanics" />
+        </form>
+      </div>
+      <div id="mechanic-results">
+        <h2>Mechanics Near Your Location:</h2>
+        <table id="mechanic-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- The mechanics' details will be dynamically added here -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <script>
+      // Simulating mechanics data based on location
+      const mechanicsData = [
+        {
+          name: "Car Repair Service",
+          phone: "923-456-7890",
+          location: "Saish Servicing Centre Curchorem, Goa, Dist. North Goa",
+        },
+        {
+          name: "Maruti Car Repairing",
+          phone: "987-654-3210",
+          location: "Satardekar Industries Vasco-da-gama, Goa, Dist. North Goa",
+        },
+        {
+          name: "Damu Garage",
+          phone: "955-555-5555",
+          location: "Near Daboli Airport Goa, Goa, Dist. North Goa",
+        },
+        {
+          name: "Flush Car Service",
+          phone: "975-589-5476",
+          location: "near bhole nath mandir, Goa, Dist. North Goa",
+        },
+        {
+          name: "Mahadev Automobile",
+          phone: "923-985-5675",
+          location: "Sanquelim, Goa, Dist. North Goa",
+        },
+        {
+          name: "Stop And Glow",
+          phone: "955-234-9875",
+          location: "opposite Borin Bethoda Bypass Road, Goa, Dist. North Goa",
+        },
+        {
+          name: "vedanta motors",
+          phone: "967-4655-23455",
+          location: "Borim, ponda, Goa, Dist. North Goa",
+        },
+        {
+          name: "Royal Motors",
+          phone: "967-456-23455",
+          location: "Panaji, Goa, Dist. North Goa",
+        },
+        {
+          name: "Moraes Workshop",
+          phone: "967-4634-235",
+          location: "Odar, Goa, Dist. North Goa",
+        },
+        {
+          name: "Dessai Garage",
+          phone: "967-465-2335",
+          location: "Loutolim, Goa, Dist. North Goa",
+        },
+        {
+          name: "Sidharth Automobiless",
+          phone: "967-4795-2125",
+          location: "Panaji, Goa, Dist. North Goa",
+        },
+        {
+          name: "Christie",
+          phone: "957-9286-178",
+          location: "DBCE",
+        },
+      ];
+
+      // Function to display mechanics based on location
+      function displayMechanics() {
+        const location = document
+          .getElementById("location")
+          .value.trim()
+          .toLowerCase();
+        const mechanicTable = document.getElementById("mechanic-table");
+        const tbody = mechanicTable.getElementsByTagName("tbody")[0];
+        tbody.innerHTML = "";
+
+        // Filter mechanics based on location
+        const filteredMechanics = mechanicsData.filter((mechanic) =>
+          mechanic.location.toLowerCase().includes(location)
+        );
+
+        if (filteredMechanics.length > 0) {
+          filteredMechanics.forEach((mechanic) => {
+            const row = document.createElement("tr");
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = mechanic.name;
+            row.appendChild(nameCell);
+
+            const phoneCell = document.createElement("td");
+            phoneCell.textContent = mechanic.phone;
+            row.appendChild(phoneCell);
+
+            const locationCell = document.createElement("td");
+            locationCell.textContent = mechanic.location;
+            row.appendChild(locationCell);
+
+            tbody.appendChild(row);
+          });
+        } else {
+          const row = document.createElement("tr");
+          const messageCell = document.createElement("td");
+          messageCell.setAttribute("colspan", "3");
+          messageCell.textContent =
+            "No mechanics found for the entered location.";
+          row.appendChild(messageCell);
+          tbody.appendChild(row);
+        }
+      }
+
+      // Event listener for form submission
+      document
+        .getElementById("search-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          displayMechanics();
+        });
+
+      // Initial display of all mechanics
+      displayMechanics();
+    </script>
+  </body>
+</html>

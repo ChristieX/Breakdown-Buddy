@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Breakdown Assistance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap" rel="stylesheet">
+    <style>
+
+      *{
+            margin:0;
+            padding:0;
+        }
+        header {
+            background-color: #780000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            width:100vw;
+        }
+
+        h1 {
+            margin: 0;
+        }
+        header h1{
+          font-family: 'Cherry Bomb One', cursive;
+        }
+        nav {
+        background-color: #C1121F;
+        padding: 10px;
+        position:sticky;
+        width:100vw;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        display: inline;
+        margin-right: 10px;
+      }
+
+      li a {
+        color: #fff;
+        text-decoration: none;
+        padding: 5px 10px;
+      }
+
+      li a:hover {
+        background-color: #730b12;
+      }
+      marquee{
+        font-family: 'Slackside One', cursive;
+        font-size: 40px;
+        padding:0;
+      }
+      body{
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        margin: 20px;
+      }
+      .container{
+        display:flex;
+        flex-direction: row;
+      }
+      .images{
+        float: left;
+      }
+      .text{
+        float: right;
+        display:flex;
+        text-align: justify;
+        margin-top: 70px;
+        flex-wrap:wrap;
+      }
+      .text p{
+        font-size: 30px;
+        font-family: 'Amatic SC', cursive;
+        text-align: center;
+      }
+      .myCard {
+        background-color: transparent;
+        width: 100vh;
+        height: 254px;
+        perspective: 1000px;
+        margin: 10px;
+      }
+
+      .title {
+        font-size: 1.5em;
+        font-weight: 900;
+        text-align: center;
+        margin: 0;
+      }
+
+      .innerCard {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        cursor: pointer;
+      }
+
+      .myCard:hover .innerCard {
+        transform: rotateY(180deg);
+      }
+
+      .frontSide,
+      .backSide {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 1rem;
+        color: white;
+        box-shadow: 0 0 0.3em rgba(255, 255, 255, 0.5);
+        font-weight: 700;
+      }
+
+      .frontSide,
+      .frontSide::before {
+        background: linear-gradient(
+          43deg,
+          rgb(6, 16, 66) 0%,
+          rgb(42, 20, 93) 46%,
+          rgb(154, 19, 19) 100%
+        );
+      }
+
+      .backSide,
+      .backSide::before {
+        background-image: linear-gradient(160deg, #977cd2 0%, #d66464 100%);
+      }
+
+      .backSide {
+        transform: rotateY(180deg);
+      }
+
+      .frontSide::before,
+      .backSide::before {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: "";
+        width: 110%;
+        height: 110%;
+        position: absolute;
+        z-index: -1;
+        border-radius: 1em;
+        filter: blur(20px);
+        animation: animate 5s linear infinite;
+      }
+      .cards {
+        display: flex;
+        flex-direction: row;
+        width: 100vw;
+      }
+
+      @keyframes animate {
+        0% {
+          opacity: 0.3;
+        }
+
+        80% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0.3;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>VEHICLE BREAKDOWN ASSISTANCE </h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="homepage.html">Home</a></li>
+        <li><a href="request_assistance.html">Request Assistance</a></li>
+        <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+        <li><a href="contacts.html">Emergency Contacts</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+      </ul>
+  </nav>
+    <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS</marquee>
+    <main>
+      <div class="container">
+        <div class="image">
+          <img src="../images/homepage.jpg" width="600px">
+        </div>
+        <div class="text">
+          <p>Breakdowns can lead to significant delays, inconvenience, and safety concerns for drivers and other road users.<br><br>An on-road vehicle breakdown application can be a game-changer, providing drivers with a reliable and convenient way to request for assistance and receive quick and efficient support</p>
+        </div>
+      </div>
+      <div class="cards">
+        <div class="myCard">
+          <div class="innerCard">
+            <div class="frontSide">
+              <p class="title">REQUEST ASSISTANCE</p>
+            </div>
+            <div class="backSide"> 
+              <p>Allows drivers to request immediate assistance during a breakdown or emergency situation. 
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="myCard">
+          <div class="innerCard">
+            <div class="frontSide">
+              <p class="title">ASSISTANCE GUIDES</p>
+            </div>
+            <div class="backSide">
+              <p>
+                Offers guidance and support to drivers for resolving common vehicle issues, such as changing a flat tire or jumpstarting a car.
+                </p>
+            </div>
+          </div>
+        </div>
+        <div class="myCard">
+          <div class="innerCard">
+            <div class="frontSide">
+              <p class="title">EMERGENCY CONTACTS</p>
+            </div>
+            <div class="backSide"> 
+              <p>Provides a list of emergency contacts, such as towing companies and nearby repair shops, in case the breakdown assistant is unable to resolve the issue.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
