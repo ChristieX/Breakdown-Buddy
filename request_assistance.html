@@ -14,6 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
       rel="stylesheet"
     />
+    
     <style>
       * {
         margin: 0;
@@ -138,6 +139,15 @@
       td {
         border: 1px solid;
       }
+      #locationbtn{
+        background-color: #4caf50;
+        color: rgb(248, 241, 241);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
     </style>
   </head>
   <body>
@@ -162,27 +172,33 @@
           <input type="text" id="location" name="location" />
 
           <input type="submit" value="Get Mechanics" />
+          <center>OR</center>
+          <center><button onclick="window.location.href='client_page.html';" id="locationbtn">Use My Location</button></center> <!-- Redirect to client's page -->
         </form>
-      </div>
-      <div id="mechanic-results">
-        <h2>Mechanics Near Your Location:</h2>
-        <table id="mechanic-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- The mechanics' details will be dynamically added here -->
-          </tbody>
-        </table>
-      </div>
-    </main>
-    <script>
-      // Simulating mechanics data based on location
-      const mechanicsData = [
+    
+
+</div>
+<div id="mechanic-results">
+<h2>Mechanics Near Your Location:</h2>
+<table id="mechanic-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- The mechanics' details will be dynamically added here -->
+  </tbody>
+</table>
+</div>
+<!-- Leaflet map container -->
+<div id="map"></div>
+</main>
+<script>
+// Simulating mechanics data based on location
+const mechanicsData = [
         {
           name: "Car Repair Service",
           phone: "923-456-7890",
@@ -247,58 +263,99 @@
 
       // Function to display mechanics based on location
       function displayMechanics() {
-        const location = document
-          .getElementById("location")
-          .value.trim()
-          .toLowerCase();
-        const mechanicTable = document.getElementById("mechanic-table");
-        const tbody = mechanicTable.getElementsByTagName("tbody")[0];
-        tbody.innerHTML = "";
+    const location = document.getElementById("location").value.trim().toLowerCase();
+    const mechanicTable = document.getElementById("mechanic-table");
+    const tbody = mechanicTable.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = "";
 
-        // Filter mechanics based on location
-        const filteredMechanics = mechanicsData.filter((mechanic) =>
-          mechanic.location.toLowerCase().includes(location)
-        );
+    // Filter mechanics based on location
+    const filteredMechanics = mechanicsData.filter((mechanic) =>
+      mechanic.location.toLowerCase().includes(location)
+    );
 
-        if (filteredMechanics.length > 0) {
-          filteredMechanics.forEach((mechanic) => {
-            const row = document.createElement("tr");
+    if (filteredMechanics.length > 0) {
+      filteredMechanics.forEach((mechanic) => {
+        const row = document.createElement("tr");
 
-            const nameCell = document.createElement("td");
-            nameCell.textContent = mechanic.name;
-            row.appendChild(nameCell);
+        const nameCell = document.createElement("td");
+        nameCell.textContent = mechanic.name;
+        row.appendChild(nameCell);
 
-            const phoneCell = document.createElement("td");
-            phoneCell.textContent = mechanic.phone;
-            row.appendChild(phoneCell);
+        const phoneCell = document.createElement("td");
+        phoneCell.textContent = mechanic.phone;
+        row.appendChild(phoneCell);
 
-            const locationCell = document.createElement("td");
-            locationCell.textContent = mechanic.location;
-            row.appendChild(locationCell);
+        const locationCell = document.createElement("td");
+        locationCell.textContent = mechanic.location;
+        row.appendChild(locationCell);
 
-            tbody.appendChild(row);
-          });
-        } else {
-          const row = document.createElement("tr");
-          const messageCell = document.createElement("td");
-          messageCell.setAttribute("colspan", "3");
-          messageCell.textContent =
-            "No mechanics found for the entered location.";
-          row.appendChild(messageCell);
-          tbody.appendChild(row);
-        }
+        tbody.appendChild(row);
+      });
+    } else {
+      const row = document.createElement("tr");
+      const messageCell = document.createElement("td");
+      messageCell.setAttribute("colspan", "3");
+      messageCell.textContent =
+        "No mechanics found for the entered location.";
+      row.appendChild(messageCell);
+      tbody.appendChild(row);
+    }
+  }
+
+  // Event listener for form submission
+  document.getElementById("search-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    displayMechanics();
+  });
+
+  // Initial display of all mechanics
+  displayMechanics();
+let map;
+let clientLatitude;
+let clientLongitude;
+// Function to get client's geolocation and display on a Leaflet map
+function getClientLocation() {
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      clientLatitude = position.coords.latitude;
+      clientLongitude = position.coords.longitude;
+
+      // Check if the client's location is available
+      if (clientLatitude && clientLongitude) {
+        // Create a map centered on the client's location
+        map = L.map('map').setView([clientLatitude, clientLongitude], 15);
+
+        // Add the OpenStreetMap base layer to the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Place a marker on the map for the client's location
+        L.marker([clientLatitude, clientLongitude]).addTo(map)
+          .bindPopup("Your Location")
+          .openPopup();
+        
+        // Send the latitude and longitude data to the server to store it in the database
+        const requestData = {
+          latitude: clientLatitude,
+          longitude: clientLongitude
+        };
+
+        // Fetch and save data to server
+        // ...
+      } else {
+        console.error("Client's geolocation is not available.");
       }
-
-      // Event listener for form submission
-      document
-        .getElementById("search-form")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          displayMechanics();
-        });
-
-      // Initial display of all mechanics
-      displayMechanics();
-    </script>
-  </body>
+    },
+    (error) => {
+      console.error("Error getting geolocation:", error.message);
+    }
+  );
+} else {
+  console.error("Geolocation is not supported by this browser.");
+}
+}
+</script>
+</body>
 </html>
