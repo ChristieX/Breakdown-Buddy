@@ -19,7 +19,7 @@
             color: #fff;
             padding: 20px;
             text-align: center;
-            width:100vw;
+            width:100%;
         }
 
         h1 {
@@ -28,11 +28,25 @@
         header h1{
           font-family: 'Cherry Bomb One', cursive;
         }
+        .button{
+          top: 2%;
+          right: 1%;
+          position: absolute;
+          background: linear-gradient(to right, #c1121f, #780000);
+          color: #fff;
+          border-radius: 30px;
+          padding: 10px 30px;
+          cursor: pointer;
+          display: block;
+          transition-duration: 0.5s;
+          border: 0;
+          outline: none;
+        }
         nav {
         background-color: #C1121F;
         padding: 10px;
         position:sticky;
-        width:100vw;
+        width:100%;
       }
       nav ul {
         list-style-type: none;
@@ -64,6 +78,8 @@
       background-color: #f2f2f2;
       margin: 0;
       padding: 0;
+      width: 100%;
+      overflow-x: hidden;
     }
     
     main {
@@ -103,6 +119,7 @@
 </head>
 <body>
     <header>
+      <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
         <h1> BREAKDOWN BUDDY</h1>
     </header>
     <nav>
