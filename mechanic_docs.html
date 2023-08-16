@@ -61,68 +61,44 @@
   <body>
     <h1>Mechanic Documentation Request Form</h1>
     <div id="Form">
-      <label for="full_name">Full Name:</label>
-      <input type="text" id="full_name" name="full_name" required />
+      <form action="mechanic.php" method="post" enctype="multipart/form-data">
+        <label for="full_name">Full Name:</label>
+        <input type="text" id="full_name" name="full_name" required />
 
-      <label for="date_of_birth">Date of Birth:</label>
-      <input type="date" id="date_of_birth" name="date_of_birth" required />
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required />
 
-      <label for="address">Address:</label>
-      <input type="text" id="address" name="address" />
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" />
 
-      <label for="contact_number">Contact Number:</label>
-      <input type="tel" id="contact_number" name="contact_number" />
+        <label for="contact_number">Contact Number:</label>
+        <input type="tel" id="contact_number" name="contact_number" />
 
-      <label for="email">Email Address:</label>
-      <input type="email" id="email" name="email" />
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" />
 
-      <h2>Documentation Required:</h2>
+        <h2>Documentation Required:</h2>
 
-      <label for="working_license">Working License:</label>
-      <input type="file" id="working_license" name="working_license" />
+        <label for="working_license">Working License:</label>
+        <input type="file" id="working_license" name="working_license" />
 
-      <label for="proof_identity">Proof of Identity:</label>
-      <input type="file" id="proof_identity" name="proof_identity" />
+        <label for="proof_identity">Proof of Identity:</label>
+        <input type="file" id="proof_identity" name="proof_identity" />
 
-      <label for="employment_history">Employment History:</label>
-      <textarea id="employment_history" name="employment_history"></textarea>
+        <label for="employment_history">Employment History:</label>
+        <textarea id="employment_history" name="employment_history"></textarea>
 
-      <label for="additional_certifications"
-        >Additional Certifications or Training:</label
-      >
-      <input
-        type="file"
-        id="additional_certifications"
-        name="additional_certifications"
-      />
-      <br />
-      <input type="submit" value="Submit" onclick="SendData()" />
+        <label for="additional_certifications"
+          >Additional Certifications or Training:</label
+        >
+        <input
+          type="file"
+          id="additional_certifications"
+          name="additional_certifications"
+        />
+        <br />
+        <input type="submit" value="Submit" />
+    </form>
     </div>
   </body>
-
-  <script>
-    function SendData() {
-      const full_name = document.getElementById("full_name").value;
-      const DOB = document.getElementById("date_of_birth").value;
-
-      fetch("http://127.0.0.1:3000/StoreDB", {
-        method: "post",
-        body: JSON.stringify({
-          Fullname: full_name,
-          DOB: DOB,
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((r) => r.json())
-        .then((data) => {
-          console.log(data);
-          if (data.resp == "Pass") {
-            window.location.href = "homepage.html?User=" + full_name;
-          }
-        });
-    }
-  </script>
 </html>
