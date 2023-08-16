@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Slackside+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #780000;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      width: 100vw;
+    }
+
+    h1 {
+      margin: 0;
+    }
+    header h1 {
+      font-family: "Cherry Bomb One", cursive;
+    }
+    nav {
+      background-color: #c1121f;
+      padding: 10px;
+      position: sticky;
+      width: 100vw;
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+
+    li a:hover {
+      background-color: #730b12;
+    }
+    marquee {
+      font-family: "Slackside One", cursive;
+      font-size: 50px;
+      padding: 0;
+    }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+h2 {
+    margin-top: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #1a1616;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 0.5rem;
+    text-align: left;
+    border:1px solid black;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+  </style>
+  <body>
+    <header>
+      <h1>BREAKDOWN BUDDY</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="homepage.html">Home</a></li>
+        <li><a href="request_assistance.html">Request Assistance</a></li>
+        <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+        <li><a href="contacts.html">Emergency Contacts</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+      </ul>
+    </nav>
+    <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+    <main>
+        <div class="container">
+            <h2>Approved Mechanics</h2>
+            <table id="mechanicTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
+                        <th>Vehicle ID</th>
+                        <th>License</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Mechanic data will be populated using JavaScript -->
+                </tbody>
+            </table>
+            
+            <h2>Breakdown Requests</h2>
+            <table id="requestTable">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Mechanic Name</th>
+                        <th>Customer Name</th>
+                        <th>Customer Vehicle ID</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Breakdown request data will be populated using JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+  </body>
+  <script>const mechanics = [
+    {
+        id: 1,
+        name: "John Doe",
+        address: "123 Main St",
+        phoneNumber: "555-1234",
+        vehicleID: "ABC123",
+        license: "123456",
+    },
+    {
+        id: 2,
+        name: "Jane Smith",
+        address: "456 Elm St",
+        phoneNumber: "555-5678",
+        vehicleID: "XYZ789",
+        license: "789012",
+    },
+    // Add more mechanics here
+];
+
+const breakdownRequests = [
+    { id: 1, mechanicID: 1, status: "Pending" },
+    { id: 2, mechanicID: 2, status: "Done" },
+    // Add more breakdown requests here
+];
+
+const mechanicTable = document.getElementById("mechanicTable");
+const requestTable = document.getElementById("requestTable");
+
+function populateMechanicTable() {
+    mechanics.forEach((mechanic) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${mechanic.name}</td>
+            <td>${mechanic.address}</td>
+            <td>${mechanic.phoneNumber}</td>
+            <td>${mechanic.vehicleID}</td>
+            <td>${mechanic.license}</td>
+        `;
+        mechanicTable.querySelector("tbody").appendChild(row);
+    });
+}
+
+
+function populateRequestTable() {
+    requestTable.querySelector("tbody").innerHTML = "";
+    breakdownRequests.forEach((request) => {
+        const mechanic = mechanics.find((m) => m.id === request.mechanicID);
+        if (mechanic) {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${request.id}</td>
+                <td>${mechanic.name}</td>
+                <td>${request.customerName}</td>
+                <td>${request.customerVehicleID}</td>
+                <td>${request.status}</td>
+            `;
+            requestTable.querySelector("tbody").appendChild(row);
+        }
+    });
+}
+populateMechanicTable();
+populateRequestTable();
+</script>
+</html>
