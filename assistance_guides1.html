@@ -92,12 +92,11 @@
         text-align: center;
         color: #4d080d;
       }
-
       .search-container {
+        margin-top: 10px;
         margin-bottom: 20px;
         text-align: center;
       }
-
       #result-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -124,9 +123,15 @@
       }
 
       .card-link {
-        display: block;
         text-align: center;
+        text-decoration: none;
+        display: block;
         margin-top: 10px;
+        background: linear-gradient(to right, #c1121f, #780000);
+        color: #fff;
+        border-radius: 30px;
+        padding: 10px 30px;
+        width: 40px;
       }
     </style>
   </head>
@@ -150,7 +155,7 @@
 
       <div class="search-container">
         <input type="text" id="search-input" placeholder="Search..." />
-        <button onclick="search()">Search</button>
+        <button  onclick="search()">Search</button>
       </div>
 
       <div id="result-container"></div>
