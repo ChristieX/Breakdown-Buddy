@@ -2,7 +2,7 @@
 $servername = "your_servername";
 $username = "your_username";
 $password = "your_password";
-$dbname = "your_dbname";
+$dbname = "vehicle_breakdown";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
