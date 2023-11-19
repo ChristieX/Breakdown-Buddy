@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -233,7 +233,8 @@ tr:nth-child(even) {
         </div>
     </main>
   </body>
-  <script>const mechanics = [
+  <script>
+  const mechanics = [
     {
         id: 1,
         name: "John Doe",
@@ -241,6 +242,7 @@ tr:nth-child(even) {
         phoneNumber: "555-1234",
         vehicleID: "ABC123",
         license: "123456",
+        approvalStatus: "Pending", // New property
     },
     {
         id: 2,
@@ -249,12 +251,14 @@ tr:nth-child(even) {
         phoneNumber: "555-5678",
         vehicleID: "XYZ789",
         license: "789012",
+        approvalStatus: "Pending", // New property
     },
     // Add more mechanics here
 ];
 
 const breakdownRequests = [
-    { id: 1, mechanicID: 1, status: "Pending" },
+    { id: 1, mechanicID: 1,customerName: "Emma Stone", customerVehicleID:"GA082357", status: "Pending" },
+    { id: 1, mechanicID: 2,customerName: "Hailey", customerVehicleID:"GA039654", status: "Pending" },
     { id: 2, mechanicID: 2, status: "Done" },
     // Add more breakdown requests here
 ];
@@ -263,6 +267,7 @@ const mechanicTable = document.getElementById("mechanicTable");
 const requestTable = document.getElementById("requestTable");
 
 function populateMechanicTable() {
+    mechanicTable.querySelector("tbody").innerHTML = "";
     mechanics.forEach((mechanic) => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -271,11 +276,15 @@ function populateMechanicTable() {
             <td>${mechanic.phoneNumber}</td>
             <td>${mechanic.vehicleID}</td>
             <td>${mechanic.license}</td>
+            <td>${mechanic.approvalStatus}</td> <!-- Display approval status -->
+            <td>
+                <button onclick="approveMechanic(${mechanic.id})">Approve</button>
+                <button onclick="disapproveMechanic(${mechanic.id})">Disapprove</button>
+            </td>
         `;
         mechanicTable.querySelector("tbody").appendChild(row);
     });
 }
-
 
 function populateRequestTable() {
     requestTable.querySelector("tbody").innerHTML = "";
@@ -294,6 +303,23 @@ function populateRequestTable() {
         }
     });
 }
+
+function approveMechanic(mechanicID) {
+    const mechanic = mechanics.find((m) => m.id === mechanicID);
+    if (mechanic) {
+        mechanic.approvalStatus = "Approved";
+        populateMechanicTable();
+    }
+}
+
+function disapproveMechanic(mechanicID) {
+    const mechanic = mechanics.find((m) => m.id === mechanicID);
+    if (mechanic) {
+        mechanic.approvalStatus = "Disapproved";
+        populateMechanicTable();
+    }
+}
+
 populateMechanicTable();
 populateRequestTable();
 </script>
