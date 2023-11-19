@@ -202,6 +202,7 @@
       <th>Name</th>
       <th>Phone</th>
       <th>Location</th>
+      <th>Request Assistance</th>
     </tr>
   </thead>
   <tbody>
@@ -213,119 +214,43 @@
 <div id="map"></div>
 </main>
 <script>
-// Simulating mechanics data based on location
-const mechanicsData = [
-        {
-          name: "Car Repair Service",
-          phone: "923-456-7890",
-          location: "Saish Servicing Centre Curchorem, Goa, Dist. North Goa",
-        },
-        {
-          name: "Maruti Car Repairing",
-          phone: "987-654-3210",
-          location: "Satardekar Industries Vasco-da-gama, Goa, Dist. North Goa",
-        },
-        {
-          name: "Damu Garage",
-          phone: "955-555-5555",
-          location: "Near Daboli Airport Goa, Goa, Dist. North Goa",
-        },
-        {
-          name: "Flush Car Service",
-          phone: "975-589-5476",
-          location: "near bhole nath mandir, Goa, Dist. North Goa",
-        },
-        {
-          name: "Mahadev Automobile",
-          phone: "923-985-5675",
-          location: "Sanquelim, Goa, Dist. North Goa",
-        },
-        {
-          name: "Stop And Glow",
-          phone: "955-234-9875",
-          location: "opposite Borin Bethoda Bypass Road, Goa, Dist. North Goa",
-        },
-        {
-          name: "vedanta motors",
-          phone: "967-4655-23455",
-          location: "Borim, ponda, Goa, Dist. North Goa",
-        },
-        {
-          name: "Royal Motors",
-          phone: "967-456-23455",
-          location: "Panaji, Goa, Dist. North Goa",
-        },
-        {
-          name: "Moraes Workshop",
-          phone: "967-4634-235",
-          location: "Odar, Goa, Dist. North Goa",
-        },
-        {
-          name: "Dessai Garage",
-          phone: "967-465-2335",
-          location: "Loutolim, Goa, Dist. North Goa",
-        },
-        {
-          name: "Sidharth Automobiless",
-          phone: "967-4795-2125",
-          location: "Panaji, Goa, Dist. North Goa",
-        },
-        {
-          name: "Christie",
-          phone: "957-9286-178",
-          location: "DBCE",
-        },
-      ];
-
-      // Function to display mechanics based on location
-      function displayMechanics() {
+async function displayMechanics() {
     const location = document.getElementById("location").value.trim().toLowerCase();
     const mechanicTable = document.getElementById("mechanic-table");
-    const tbody = mechanicTable.getElementsByTagName("tbody")[0];
-    tbody.innerHTML = "";
 
-    // Filter mechanics based on location
-    const filteredMechanics = mechanicsData.filter((mechanic) =>
-      mechanic.location.toLowerCase().includes(location)
-    );
+    // Fetch data from the server based on the search criteria
+    const response = await fetch(`request_assistance.php?search=${location}`);
+    const htmlContent = await response.text();
 
-    if (filteredMechanics.length > 0) {
-      filteredMechanics.forEach((mechanic) => {
-        const row = document.createElement("tr");
-
-        const nameCell = document.createElement("td");
-        nameCell.textContent = mechanic.name;
-        row.appendChild(nameCell);
-
-        const phoneCell = document.createElement("td");
-        phoneCell.textContent = mechanic.phone;
-        row.appendChild(phoneCell);
-
-        const locationCell = document.createElement("td");
-        locationCell.textContent = mechanic.location;
-        row.appendChild(locationCell);
-
-        tbody.appendChild(row);
-      });
-    } else {
-      const row = document.createElement("tr");
-      const messageCell = document.createElement("td");
-      messageCell.setAttribute("colspan", "3");
-      messageCell.textContent =
-        "No mechanics found for the entered location.";
-      row.appendChild(messageCell);
-      tbody.appendChild(row);
-    }
-  }
-
-  // Event listener for form submission
-  document.getElementById("search-form").addEventListener("submit", function (event) {
+    // Update the table with the received HTML content
+    mechanicTable.innerHTML = htmlContent;
+    const requestCell = row.insertCell(3);
+    const requestButton = document.createElement("button");
+    requestButton.textContent = "Request";
+    requestButton.addEventListener("click", () => requestAssistance(mechanic.id)); // Replace 'id' with the actual unique identifier for each mechanic
+    requestCell.appendChild(requestButton);
+}
+// Function to handle the request assistance button click
+function requestAssistance(mechanicId) {
+    // Implement the logic to handle the request assistance button click
+    console.log(`Request assistance for mechanic with ID ${mechanicId}`);
+}
+// Event listener for form submission
+document.getElementById("search-form").addEventListener("submit", function (event) {
     event.preventDefault();
     displayMechanics();
-  });
+});
 
-  // Initial display of all mechanics
-  displayMechanics();
+// Event listener for input changes (for real-time search)
+document.getElementById("location").addEventListener("input", function () {
+    displayMechanics();
+});
+
+// Initial display of all mechanics
+displayMechanics();
+
+
+
 let map;
 let clientLatitude;
 let clientLongitude;
