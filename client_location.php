@@ -1,8 +1,5 @@
-<?php
-$servername = "your_servername";
-$username = "your_username";
-$password = "your_password";
-$dbname = "vehicle_breakdown";
+<!-- ?php -->
+<!-- include('db_connect.php');
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -20,4 +17,4 @@ if ($result->num_rows > 0) {
 
     header('Content-type: application/json');
     echo json_encode(['latitude' => $clientLatitude, 'longitude' => $clientLongitude]);
-}
+} -->
