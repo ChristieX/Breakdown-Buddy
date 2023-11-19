@@ -1,11 +1,11 @@
 <?php
 // Replace 'your_database', 'your_username', 'your_password' with your actual database credentials
-$connection = new mysqli('localhost', 'root', '', 'your_database_name');
+$connection = new mysqli('localhost', 'root', '', 'vehicle_breakdown');
 if ($connection->connect_error) {
   die("Connection failed: " . $connection->connect_error);
 }
 
-$sql = "SELECT latitude, longitude FROM client_geolocation ORDER BY id DESC LIMIT 1";
+$sql = "SELECT latitude, longitude FROM client_geolocation ORDER BY geolocation_id DESC LIMIT 1";
 $result = $connection->query($sql);
 
 if ($result->num_rows > 0) {
