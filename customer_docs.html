@@ -60,14 +60,14 @@
     <div class="container">
       <div class="form-container">
         <h1>Customer Vehicle Breakdown Documentation</h1>
-        <form>
-          <label for="driving_license">Driving License:</label>
+        <form action="customer_docs.php" method="post">
+           <label for="driving_license">Driving License:</label>
           <input
             type="file"
             id="driving_license"
-            name="driving_license"
-            required
-          />
+            name="driving_license";
+          /> 
+          <br><br>
           <br><br>
           <label for="vehicle_number">Vehicle Number:</label>
           <input
@@ -83,10 +83,10 @@
     </div>
   </body>
   <script>
-    var SubmitBtn = document.getElementById("SubmitBtn");
+  //  var SubmitBtn = document.getElementById("SubmitBtn");
 
-SubmitBtn.addEventListener("click", function () {
-window.location.href = "homepage.html";
-});
+//SubmitBtn.addEventListener("click", function () {
+//window.location.href = "homepage.html";
+//});
   </script>
 </html>

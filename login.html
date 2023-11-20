@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="RoadSide-Assistance">
     <title>Sign In Form</title>
-    <link rel="stylesheet" href="logstyle.css">
+    <link rel="stylesheet" href="login_style.css">
 </head>
 <body>
     <div class="one">
@@ -15,17 +15,17 @@
                 <button type="button" class="toggle-btn" onclick="signin()">Sign In</button>
                 <button type="button" class="toggle-btn" onclick="signup()">Sign Up</button>
             </div>
-            <form id="signin" class="input-group" >
+            <form id="signin" class="input-group" action="homepage.html">
                 <input type="text" class="input-field" placeholder="Username" required>
                 <input type="text" class="input-field" placeholder="Password" required>
                 <input type="checkbox" class="checkbox"><span>Remember Password</span>
                 <button type="Submit" class="submit-btn">Submit</button>
             </form>
-            <form id="signup" class="input-group">
-                <input type="email" class="input-field" placeholder="Email" required>
-                <input type="text" class="input-field" placeholder="Username" required>
-                <input type="text" class="input-field" placeholder="Password" required>
-                <input type="tel" class="input-field" placeholder="Re-enter password" required>
+            <form id="signup" class="input-group" action="login.php" method="post">
+                <input type="email" class="input-field" name="email" placeholder="Email" required>
+                <input type="text" class="input-field" name="username" placeholder="Username" required>
+                <input type="password" class="input-field" name="password" placeholder="Password" required>
+                <input type="password" class="input-field" name="confirm_password" placeholder="Re-enter password" required>
                 <input type="checkbox" class="checkbox"><span>I agree to the terms and conditions</span>
                 <button type="Submit" class="submit-btn">Submit</button>
             </form>
