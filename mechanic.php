@@ -24,16 +24,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $imgContent2 = addslashes(file_get_contents($proof_identity));
     $additional_certifications = $_FILES['additional_certifications']['tmp_name'];
     $imgContent3 = addslashes(file_get_contents($additional_certifications));
+
     // Upload files and store file paths in the database
     //$working_license_path = uploadFile("working_license");
     //$proof_identity_path = uploadFile("proof_identity");
     //$additional_certifications_path = uploadFile("additional_certifications");
     //address_street='$address_street',
 
+
     // SQL query to insert data into the database
     $sql = "UPDATE mechanic SET 
     first_name='$first_name',
     last_name='$last_name',
+
     phone_number='$contact_number',
     email='$email',
     working_license= '$imgContent1',
@@ -42,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     WHERE username='$username'";
 
     $sql = "INSERT INTO mechanic_address (id, state, city, phone) VALUES('$mechanic_id','$address_state','$address_city','$contact_number')";
+
 
     if ($conn->query($sql) === TRUE) {
         header("Location: homepage.html");
