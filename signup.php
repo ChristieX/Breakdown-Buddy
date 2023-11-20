@@ -20,7 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = "INSERT INTO $table_name (username, password, email) VALUES ('$username', '$password', '$email')";
 
     if ($conn->query($sql) === TRUE) {
+        
         echo "Data added successfully!";
+        $_SESSION['user_id'] = $conn->insert_id;
         if($user_type == 'mechanic')
             {header("Location: mechanic_docs.html");}
         else

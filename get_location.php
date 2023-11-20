@@ -8,14 +8,6 @@ include('db_connect.php');
 
 $sql = "SELECT latitude, longitude FROM client_geolocation ORDER BY geolocation_id DESC LIMIT 1";
 $result = $conn->query($sql);
-// $connection = new mysqli('localhost', 'root', '', 'vehicle_breakdown');
-// if ($connection->connect_error) {
-//   die("Connection failed: " . $connection->connect_error);
-// }
-include('db_connect.php');
-
-$sql = "SELECT latitude, longitude FROM client_geolocation ORDER BY geolocation_id DESC LIMIT 1";
-$result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   $row = $result->fetch_assoc();

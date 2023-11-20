@@ -7,7 +7,7 @@ include('db_connect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_SESSION['username'];  
-    $mechanic_id = $_SESSION['mechanic_id']; 
+    $mechanic_id = $_SESSION['user_id']; 
     $first_name = $_POST["first_name"];
     $last_name = $_POST["last_name"];
     //$date_of_birth = $_POST["date_of_birth"];
