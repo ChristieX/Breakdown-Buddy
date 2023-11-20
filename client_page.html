@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Client Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Slackside+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
+      rel="stylesheet"
+    />
+  <!-- Add Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+  <!-- Add Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background-color: #780000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    width: 100vw;
+  }
+
+  h1 {
+    margin: 0;
+  }
+  header h1 {
+    font-family: "Cherry Bomb One", cursive;
+  }
+  nav {
+    background-color: #c1121f;
+    padding: 10px;
+    position: sticky;
+    width: 100vw;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: inline;
+    margin-right: 10px;
+  }
+
+  li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
+
+  li a:hover {
+    background-color: #730b12;
+  }
+  marquee {
+    font-family: "Slackside One", cursive;
+    font-size: 50px;
+    padding: 0;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  #locationbtn{
+    background-color: #6e0b07;
+        color: rgb(248, 241, 241);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+  }
+  .button{
+      top: 2%;
+      right: 1%;
+      position: absolute;
+      background: linear-gradient(to right, #ae474d, #780000);
+      color: #fff;
+      border-radius: 30px;
+      padding: 10px 30px;
+      cursor: pointer;
+      display: block;
+      transition-duration: 0.5s;
+      border: 0;
+      outline: none;
+    }
+</style>
+<body>
+  <header>
+    <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
+    <h1>BREAKDOWN BUDDY</h1>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="homepage.html">Home</a></li>
+      <li><a href="request_assistance.html">Request Assistance</a></li>
+      <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+      <li><a href="contacts.html">Emergency Contacts</a></li>
+      <li><a href="about_us.html">About Us</a></li>
+    </ul>
+  </nav>
+  <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+  <main>
+
+    <h2>Client Geolocation</h2>
+    <p>Click the button below to use your geolocation:</p>
+    <button onclick="getClientLocation()" id="locationbtn">Use My Location</button>
+    
+    <!-- Add a div to serve as the container for the Leaflet map -->
+    <div id="map" style="height: 400px;"></div>
+    </main>
+  <script>
+    let map;
+    let clientLatitude; // Client's latitude
+    let clientLongitude; // Client's longitude
+
+    // Function to get client's geolocation and display on a Leaflet map
+    function getClientLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            clientLatitude = position.coords.latitude;
+            clientLongitude = position.coords.longitude;
+
+            // Check if the client's location is available
+            if (clientLatitude && clientLongitude) {
+              // Create a map centered on the client's location
+              map = L.map('map').setView([clientLatitude, clientLongitude], 15);
+
+              // Add the OpenStreetMap base layer to the map
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              }).addTo(map);
+
+              // Place a marker on the map for the client's location
+              L.marker([clientLatitude, clientLongitude]).addTo(map)
+                .bindPopup("Your Location")
+                .openPopup();
+                
+              // Send the latitude and longitude data to the server to store it in the database
+              const requestData = {
+                latitude: clientLatitude,
+                longitude: clientLongitude
+              };
+
+              fetch('save_location.php', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+              })
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+              })
+              .catch(error => {
+                console.error('Error saving location:', error);
+              });
+            } else {
+              console.error("Client's geolocation is not available.");
+            }
+          },
+          (error) => {
+            console.error("Error getting geolocation:", error.message);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    }
+  </script>
+</body>
+</html>

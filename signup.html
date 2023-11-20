@@ -4,7 +4,7 @@
     <title>Popup Example</title>
     <style>
       body {
-        background-image: url("../images/signin_bg.jpg");
+        background-image: url("images/signin_bg.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         min-height: 100vh;
@@ -72,29 +72,31 @@
   <body>
     <div class="overlay">
       <div class="popup">
-        <div id="heading">
-          <h2>Are you a mechanic or a customer?</h2>
-        </div>
-        <div class="options-container">
-          <div class="option">
-            <img
-              src="../images/mechanic.jpg"
-              alt="Customer"
-              class="user-image"
-            />
-            <br />
-            <button id="mechanicBtn">Mechanic</button>
+        <form action="signup.php" method="post">
+          <div id="heading">
+            <h2>Are you a mechanic or a customer?</h2>
           </div>
-          <div class="option">
-            <img
-              src="../images/customer.jpg"
-              alt="Customer"
-              class="user-image"
-            />
-            <br />
-            <button id="customerBtn">Customer</button>
+          <div class="options-container">
+            <div class="option">
+              <img
+                src="images/mechanic.jpg"
+                alt="Customer"
+                class="user-image"
+              />
+              <br />
+              <button id="mechanicBtn" name="user_type" value="mechanic">Mechanic</button>
+            </div>
+            <div class="option">
+              <img
+                src="images/customer.jpg"
+                alt="Customer"
+                class="user-image"
+              />
+              <br />
+              <button id="customerBtn" name="user_type" value="customer">Customer</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 

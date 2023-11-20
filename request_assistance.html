@@ -14,6 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
       rel="stylesheet"
     />
+    
     <style>
       * {
         margin: 0;
@@ -24,7 +25,7 @@
         color: #fff;
         padding: 20px;
         text-align: center;
-        width: 100vw;
+        width: 100%;
       }
 
       h1 {
@@ -37,7 +38,7 @@
         background-color: #c1121f;
         padding: 10px;
         position: sticky;
-        width: 100vw;
+        width: 100%;
       }
       ul {
         list-style-type: none;
@@ -65,6 +66,8 @@
         padding: 0;
       }
       body {
+        width: 100%;
+        overflow-x: hidden;
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
@@ -72,7 +75,20 @@
       h1 {
         text-align: center;
       }
-
+      .button{
+        top: 2%;
+        right: 1%;
+        position: absolute;
+        background: linear-gradient(to right, #c1121f, #780000);
+        color: #fff;
+        border-radius: 30px;
+        padding: 10px 30px;
+        cursor: pointer;
+        display: block;
+        transition-duration: 0.5s;
+        border: 0;
+        outline: none;
+    }
       form {
         max-width: 400px;
         margin: 0 auto;
@@ -138,10 +154,20 @@
       td {
         border: 1px solid;
       }
+      #locationbtn{
+        background-color: #4caf50;
+        color: rgb(248, 241, 241);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
     </style>
   </head>
   <body>
     <header>
+      <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
       <h1>BREAKDOWN BUDDY</h1>
     </header>
     <nav>
@@ -162,143 +188,115 @@
           <input type="text" id="location" name="location" />
 
           <input type="submit" value="Get Mechanics" />
+          <center>OR</center>
+          <center><button onclick="window.location.href='client_page.html';" id="locationbtn">Use My Location</button></center> <!-- Redirect to client's page -->
         </form>
-      </div>
-      <div id="mechanic-results">
-        <h2>Mechanics Near Your Location:</h2>
-        <table id="mechanic-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- The mechanics' details will be dynamically added here -->
-          </tbody>
-        </table>
-      </div>
-    </main>
-    <script>
-      // Simulating mechanics data based on location
-      const mechanicsData = [
-        {
-          name: "Car Repair Service",
-          phone: "923-456-7890",
-          location: "Saish Servicing Centre Curchorem, Goa, Dist. North Goa",
-        },
-        {
-          name: "Maruti Car Repairing",
-          phone: "987-654-3210",
-          location: "Satardekar Industries Vasco-da-gama, Goa, Dist. North Goa",
-        },
-        {
-          name: "Damu Garage",
-          phone: "955-555-5555",
-          location: "Near Daboli Airport Goa, Goa, Dist. North Goa",
-        },
-        {
-          name: "Flush Car Service",
-          phone: "975-589-5476",
-          location: "near bhole nath mandir, Goa, Dist. North Goa",
-        },
-        {
-          name: "Mahadev Automobile",
-          phone: "923-985-5675",
-          location: "Sanquelim, Goa, Dist. North Goa",
-        },
-        {
-          name: "Stop And Glow",
-          phone: "955-234-9875",
-          location: "opposite Borin Bethoda Bypass Road, Goa, Dist. North Goa",
-        },
-        {
-          name: "vedanta motors",
-          phone: "967-4655-23455",
-          location: "Borim, ponda, Goa, Dist. North Goa",
-        },
-        {
-          name: "Royal Motors",
-          phone: "967-456-23455",
-          location: "Panaji, Goa, Dist. North Goa",
-        },
-        {
-          name: "Moraes Workshop",
-          phone: "967-4634-235",
-          location: "Odar, Goa, Dist. North Goa",
-        },
-        {
-          name: "Dessai Garage",
-          phone: "967-465-2335",
-          location: "Loutolim, Goa, Dist. North Goa",
-        },
-        {
-          name: "Sidharth Automobiless",
-          phone: "967-4795-2125",
-          location: "Panaji, Goa, Dist. North Goa",
-        },
-        {
-          name: "Christie",
-          phone: "957-9286-178",
-          location: "DBCE",
-        },
-      ];
+    
 
-      // Function to display mechanics based on location
-      function displayMechanics() {
-        const location = document
-          .getElementById("location")
-          .value.trim()
-          .toLowerCase();
-        const mechanicTable = document.getElementById("mechanic-table");
-        const tbody = mechanicTable.getElementsByTagName("tbody")[0];
-        tbody.innerHTML = "";
+</div>
+<div id="mechanic-results">
+<h2>Mechanics Near Your Location:</h2>
+<table id="mechanic-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Location</th>
+      <th>Request Assistance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- The mechanics' details will be dynamically added here -->
+  </tbody>
+</table>
+</div>
+<!-- Leaflet map container -->
+<div id="map"></div>
+</main>
+<script>
+async function displayMechanics() {
+    const location = document.getElementById("location").value.trim().toLowerCase();
+    const mechanicTable = document.getElementById("mechanic-table");
 
-        // Filter mechanics based on location
-        const filteredMechanics = mechanicsData.filter((mechanic) =>
-          mechanic.location.toLowerCase().includes(location)
-        );
+    // Fetch data from the server based on the search criteria
+    const response = await fetch(`request_assistance.php?search=${location}`);
+    const htmlContent = await response.text();
 
-        if (filteredMechanics.length > 0) {
-          filteredMechanics.forEach((mechanic) => {
-            const row = document.createElement("tr");
+    // Update the table with the received HTML content
+    mechanicTable.innerHTML = htmlContent;
+    const requestCell = row.insertCell(3);
+    const requestButton = document.createElement("button");
+    requestButton.textContent = "Request";
+    requestButton.addEventListener("click", () => requestAssistance(mechanic.id)); // Replace 'id' with the actual unique identifier for each mechanic
+    requestCell.appendChild(requestButton);
+}
+// Function to handle the request assistance button click
+function requestAssistance(mechanicId) {
+    // Implement the logic to handle the request assistance button click
+    console.log(`Request assistance for mechanic with ID ${mechanicId}`);
+}
+// Event listener for form submission
+document.getElementById("search-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    displayMechanics();
+});
 
-            const nameCell = document.createElement("td");
-            nameCell.textContent = mechanic.name;
-            row.appendChild(nameCell);
+// Event listener for input changes (for real-time search)
+document.getElementById("location").addEventListener("input", function () {
+    displayMechanics();
+});
 
-            const phoneCell = document.createElement("td");
-            phoneCell.textContent = mechanic.phone;
-            row.appendChild(phoneCell);
+// Initial display of all mechanics
+displayMechanics();
 
-            const locationCell = document.createElement("td");
-            locationCell.textContent = mechanic.location;
-            row.appendChild(locationCell);
 
-            tbody.appendChild(row);
-          });
-        } else {
-          const row = document.createElement("tr");
-          const messageCell = document.createElement("td");
-          messageCell.setAttribute("colspan", "3");
-          messageCell.textContent =
-            "No mechanics found for the entered location.";
-          row.appendChild(messageCell);
-          tbody.appendChild(row);
-        }
+
+let map;
+let clientLatitude;
+let clientLongitude;
+// Function to get client's geolocation and display on a Leaflet map
+function getClientLocation() {
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      clientLatitude = position.coords.latitude;
+      clientLongitude = position.coords.longitude;
+
+      // Check if the client's location is available
+      if (clientLatitude && clientLongitude) {
+        // Create a map centered on the client's location
+        map = L.map('map').setView([clientLatitude, clientLongitude], 15);
+
+        // Add the OpenStreetMap base layer to the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Place a marker on the map for the client's location
+        L.marker([clientLatitude, clientLongitude]).addTo(map)
+          .bindPopup("Your Location")
+          .openPopup();
+        
+        // Send the latitude and longitude data to the server to store it in the database
+        const requestData = {
+          latitude: clientLatitude,
+          longitude: clientLongitude
+        };
+
+        // Fetch and save data to server
+        // ...
+      } else {
+        console.error("Client's geolocation is not available.");
       }
-
-      // Event listener for form submission
-      document
-        .getElementById("search-form")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          displayMechanics();
-        });
-
-      // Initial display of all mechanics
-      displayMechanics();
-    </script>
-  </body>
+    },
+    (error) => {
+      console.error("Error getting geolocation:", error.message);
+    }
+  );
+} else {
+  console.error("Geolocation is not supported by this browser.");
+}
+}
+</script>
+</body>
 </html>
