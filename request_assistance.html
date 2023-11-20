@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -190,6 +191,19 @@
           <input type="submit" value="Get Mechanics" />
           <center>OR</center>
           <center><button onclick="window.location.href='client_page.html';" id="locationbtn">Use My Location</button></center> <!-- Redirect to client's page -->
+          <div id="request-form" style="display: none;">
+  <h2>Request Assistance</h2>
+  <form id="assistance-request-form">
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" cols="50"></textarea>
+
+    <label for="request-location">Location:</label>
+    <input type="text" id="request-location" name="request-location" />
+    <input type="hidden" id="client-id" name="client-id" value="<?php echo $_SESSION['client_id']; ?>" />
+    <input type="submit" value="Submit Request" />
+  </form>
+</div>
+
         </form>
     
 
@@ -224,16 +238,66 @@ async function displayMechanics() {
 
     // Update the table with the received HTML content
     mechanicTable.innerHTML = htmlContent;
-    const requestCell = row.insertCell(3);
-    const requestButton = document.createElement("button");
-    requestButton.textContent = "Request";
-    requestButton.addEventListener("click", () => requestAssistance(mechanic.id)); // Replace 'id' with the actual unique identifier for each mechanic
-    requestCell.appendChild(requestButton);
+
+    // Attach event listeners to the "Request" buttons
+    const requestButtons = document.querySelectorAll("[data-mechanic-id]");
+    requestButtons.forEach(button => {
+        button.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const mechanicId = button.getAttribute("data-mechanic-id");
+
+            // Send a POST request to submit_request.php
+            try {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'submit_request.php';
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'mechanic_id';
+    input.value = mechanicId;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+
+    form.submit();
+} catch (error) {
+    console.error('Error during form submission:', error);
 }
+            // try {
+            //     const response = await fetch('submit_request.php', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/x-www-form-urlencoded',
+            //         },
+            //         body: `mechanic_id=${encodeURIComponent(mechanicId)}`,
+            //     });
+
+            //     if (response.ok) {
+            //         console.log('Request submitted successfully');
+                    
+            //         // Redirect to submit_request.php after successful submission
+            //         window.location.href = 'submit_request.php';
+            //     } else {
+            //         console.error('Failed to submit request');
+            //     }
+            // } catch (error) {
+            //     console.error('Error during fetch:', error);
+            // }
+        });
+    });
+}
+
+
+// Rest of the JavaScript code remains unchanged
+
 // Function to handle the request assistance button click
 function requestAssistance(mechanicId) {
     // Implement the logic to handle the request assistance button click
     console.log(`Request assistance for mechanic with ID ${mechanicId}`);
+    // Redirect to a PHP page
+window.location.href = 'submit_request.php';
+
 }
 // Event listener for form submission
 document.getElementById("search-form").addEventListener("submit", function (event) {

@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
                 <td>" . $row['companyName'] . "</td>
                 <td>" . $row['phone'] . "</td>
                 <td>" . $location . "</td>
-                <td><button onclick='requestAssistance(" . $row['id'] . ")'>Request</button></td>
+                <td><button data-mechanic-id='" . $row['id'] . "' onclick='requestAssistance(" . $row['id'] . ")'>Request</button></td>
               </tr>";
     }
 } else {
