@@ -1,23 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Client Page</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Slackside+One&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Slackside+One&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet" />
   <!-- Add Leaflet CSS -->
+  <!-- Latest Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
-  <!-- Add Leaflet JavaScript -->
+  <!-- Latest Leaflet JavaScript -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <style>
@@ -74,29 +69,43 @@
     margin: 0;
     padding: 0;
   }
-  #locationbtn{
+  #locationbtn {
     background-color: #6e0b07;
-        color: rgb(248, 241, 241);
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
+    color: rgb(248, 241, 241);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
   }
-  .button{
-      top: 2%;
-      right: 1%;
-      position: absolute;
-      background: linear-gradient(to right, #ae474d, #780000);
-      color: #fff;
-      border-radius: 30px;
-      padding: 10px 30px;
-      cursor: pointer;
-      display: block;
-      transition-duration: 0.5s;
-      border: 0;
-      outline: none;
-    }
+  .button {
+    top: 2%;
+    right: 1%;
+    position: absolute;
+    background: linear-gradient(to right, #ae474d, #780000);
+    color: #fff;
+    border-radius: 30px;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    transition-duration: 0.5s;
+    border: 0;
+    outline: none;
+  }
+  #mapContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #map {
+    height: 400px;
+    width: 100%;
+  }
+
+  #mechanicsListContainer {
+    margin-top: 20px;
+  }
 </style>
 <body>
   <header>
@@ -114,74 +123,187 @@
   </nav>
   <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
   <main>
-
     <h2>Client Geolocation</h2>
     <p>Click the button below to use your geolocation:</p>
     <button onclick="getClientLocation()" id="locationbtn">Use My Location</button>
-    
-    <!-- Add a div to serve as the container for the Leaflet map -->
-    <div id="map" style="height: 400px;"></div>
-    </main>
+
+    <!-- Map and Mechanics Container -->
+    <div id="mapContainer">
+      <!-- Leaflet map container -->
+      <div id="map"></div>
+    </div>
+    <!-- Mechanics Table Container -->
+    <div id="mechanicsListContainer">
+      <!-- Mechanics Table -->
+      <div id="mechanicsList"></div>
+    </div>
+    <!-- Additional Result Div for Closest Mechanics -->
+    <div id="result"></div>
+  </main>
+
   <script>
-    let map;
-    let clientLatitude; // Client's latitude
-    let clientLongitude; // Client's longitude
+     let map;
+  let clientLatitude; // Client's latitude
+  let clientLongitude; // Client's longitude
+  let requestData; // Declare requestData globally
+  let locationBtn; // Declare locationBtn globally
 
-    // Function to get client's geolocation and display on a Leaflet map
-    function getClientLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            clientLatitude = position.coords.latitude;
-            clientLongitude = position.coords.longitude;
+  // Function to initialize the Leaflet map with the client's location
+  function initializeMap() {
+    map = L.map('map').setView([clientLatitude, clientLongitude], 15);
 
-            // Check if the client's location is available
-            if (clientLatitude && clientLongitude) {
-              // Create a map centered on the client's location
-              map = L.map('map').setView([clientLatitude, clientLongitude], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-              // Add the OpenStreetMap base layer to the map
-              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              }).addTo(map);
+    // Place a marker on the map for the client's location
+    L.marker([clientLatitude, clientLongitude]).addTo(map)
+      .bindPopup("Your Location")
+      .openPopup();
 
-              // Place a marker on the map for the client's location
-              L.marker([clientLatitude, clientLongitude]).addTo(map)
-                .bindPopup("Your Location")
-                .openPopup();
-                
-              // Send the latitude and longitude data to the server to store it in the database
-              const requestData = {
-                latitude: clientLatitude,
-                longitude: clientLongitude
-              };
+    // Send the latitude and longitude data to the server to store it in the database
+    requestData = {
+      latitude: clientLatitude,
+      longitude: clientLongitude
+    };
 
-              fetch('save_location.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestData)
-              })
-              .then(response => response.json())
-              .then(data => {
-                console.log(data);
-              })
-              .catch(error => {
-                console.error('Error saving location:', error);
-              });
-            } else {
-              console.error("Client's geolocation is not available.");
-            }
-          },
-          (error) => {
-            console.error("Error getting geolocation:", error.message);
+    fetch('save_location.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        locationBtn.innerHTML = 'Location Saved';
+
+        // Update requestData and fetch closest mechanics
+        requestData = {
+          latitude: clientLatitude,
+          longitude: clientLongitude
+        };
+        fetchClosestMechanics();
+      })
+      .catch(error => {
+        console.error('Error saving location:', error);
+        locationBtn.innerHTML = 'Error Locating';
+      });
+  }
+
+  // Function to get client's geolocation and display on a Leaflet map
+  function getClientLocation() {
+    locationBtn = document.getElementById('locationbtn'); // Move this line inside the function
+    locationBtn.innerHTML = 'Locating...';
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          clientLatitude = position.coords.latitude;
+          clientLongitude = position.coords.longitude;
+
+          console.log('Client Latitude:', clientLatitude);
+          console.log('Client Longitude:', clientLongitude);
+
+          // Check if the client's location is available
+          if (clientLatitude && clientLongitude) {
+            // After getting the location, initialize the map
+            initializeMap();
+          } else {
+            console.error("Client's geolocation is not available.");
+            locationBtn.innerHTML = 'Error Locating';
           }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
+        },
+        (error) => {
+          console.error("Error getting geolocation:", error.message);
+          locationBtn.innerHTML = 'Error Locating';
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      locationBtn.innerHTML = 'Geolocation Not Supported';
     }
+  }
+
+    // Function to fetch and display the closest mechanics
+    // Function to fetch and display the closest mechanics
+// Function to fetch and display the closest mechanics
+function fetchClosestMechanics() {
+  if (requestData) {
+    fetch('test_get_closest_mechanic.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => response.text()) // Change this line to response.text()
+      .then(data => {
+        console.log('Response from server:', data); // Log the response
+
+        try {
+          // Try to parse the JSON data
+          const jsonData = JSON.parse(data);
+          displayMechanics(jsonData);
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching mechanics:', error);
+      });
+  } else {
+    console.error('requestData is not defined.');
+  }
+}
+
+
+// Function to display the list of mechanics
+function displayMechanics(mechanics) {
+  const mechanicsList = document.getElementById('mechanicsList');
+  const resultDiv = document.getElementById('result');
+  mechanicsList.innerHTML = ''; // Clear existing content
+  resultDiv.innerHTML = '<h2>Closest Mechanics:</h2>'; // Clear existing content
+
+  if (mechanics.length > 0) {
+    // Create a table header
+    let tableContent = '<table border="1"><tr><th>Company Name</th><th>Shop Name</th><th>City</th><th>Distance</th></tr>';
+
+    // Display each mechanic in the table and result div
+    mechanics.forEach(mechanic => {
+      // Parse the distance as a float
+      const distance = parseFloat(mechanic.distance);
+
+      // Check if distance is a valid number and convert it
+      const formattedDistance = !isNaN(distance) ? distance.toFixed(2) + ' km' : 'N/A';
+
+      tableContent += `
+        <tr>
+          <td>${mechanic.companyName}</td>
+          <td>${mechanic.shopName}</td>
+          <td>${mechanic.city}</td>
+          <td>${formattedDistance}</td>
+        </tr>
+      `;
+
+      resultDiv.innerHTML += `<p>Latitude: ${mechanic.latitude}, Longitude: ${mechanic.longitude}, Distance: ${formattedDistance}</p>`;
+    });
+
+    tableContent += '</table>';
+    mechanicsList.innerHTML = tableContent;
+  } else {
+    mechanicsList.innerHTML = '<p>No mechanics found nearby.</p>';
+    resultDiv.innerHTML = ''; // Clear result div if no mechanics found
+  }
+}
+
+
+
+    // Trigger the client location retrieval when the page loads
+    getClientLocation();
+
   </script>
+
 </body>
 </html>
