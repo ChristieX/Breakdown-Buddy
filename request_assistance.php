@@ -26,6 +26,7 @@ echo "<table id='mechanic-table'>
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $location = $row['streetName'] . ', ' . $row['city'] . ', ' . $row['state'];
+        
         echo "<tr>
                 <td>" . $row['companyName'] . "</td>
                 <td></td>
