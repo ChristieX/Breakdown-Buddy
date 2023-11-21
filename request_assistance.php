@@ -3,10 +3,9 @@ include('db_connect.php');
 
 // Fetch data from the mechanic_address table based on search criteria
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
-$sql = "SELECT id, companyName, phone, shopName, city, state FROM mechanic_address WHERE 
+$sql = "SELECT mechanic_id, companyName,streetName, city, state FROM mechanic_address WHERE 
         companyName LIKE '%$search%' OR 
-        phone LIKE '%$search%' OR 
-        shopName LIKE '%$search%' OR 
+        streetName LIKE '%$search%' OR 
         city LIKE '%$search%' OR 
         state LIKE '%$search%'";
 
@@ -26,12 +25,12 @@ echo "<table id='mechanic-table'>
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $location = $row['shopName'] . ', ' . $row['city'] . ', ' . $row['state'];
+        $location = $row['streetName'] . ', ' . $row['city'] . ', ' . $row['state'];
         echo "<tr>
                 <td>" . $row['companyName'] . "</td>
-                <td>" . $row['phone'] . "</td>
+                <td></td>
                 <td>" . $location . "</td>
-                <td><button data-mechanic-id='" . $row['id'] . "' onclick='requestAssistance(" . $row['id'] . ")'>Request</button></td>
+                <td><button data-mechanic-id='" . $row['mechanic_id'] . "' onclick='requestAssistance(" . $row['mechanic_id'] . ")'>Request</button></td>
               </tr>";
     }
 } else {
