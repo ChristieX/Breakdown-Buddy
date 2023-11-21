@@ -22,9 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $imgContent1 = addslashes(file_get_contents($working_license));
     $proof_identity = $_FILES['proof_identity']['tmp_name'];
     $imgContent2 = addslashes(file_get_contents($proof_identity));
-    $additional_certifications = $_FILES['additional_certifications']['tmp_name'];
-    $imgContent3 = addslashes(file_get_contents($additional_certifications));
-
+    //$additional_certifications = $_FILES['additional_certifications']['tmp_name'];
+    //$imgContent3 = addslashes(file_get_contents($additional_certifications));
+    //additional_requirements='$imgContent3' 
     // Upload files and store file paths in the database
     //$working_license_path = uploadFile("working_license");
     //$proof_identity_path = uploadFile("proof_identity");
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     email='$email',
     working_license= '$imgContent1',
     proof_of_identity='$imgContent2',
-    additional_requirements='$imgContent3' 
+
     WHERE username='$username'";
 
     $sql = "INSERT INTO mechanic_address (id, state, city, phone) VALUES('$mechanic_id','$address_state','$address_city','$contact_number')";
