@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mechanic's Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Slackside+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
+      rel="stylesheet"
+    />
+  <title>Mechanic's Profile</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background-color: #780000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  h1 {
+    margin: 0;
+  }
+  header h1 {
+    font-family: "Cherry Bomb One", cursive;
+  }
+  .button{
+    top: 2%;
+    right: 1%;
+    position: absolute;
+    background: linear-gradient(to right, #c1121f, #780000);
+    color: #fff;
+    border-radius: 30px;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    transition-duration: 0.5s;
+    border: 0;
+    outline: none;
+  }
+  nav {
+    background-color: #c1121f;
+    padding: 10px;
+    position: sticky;
+    width: 100%;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: inline;
+    margin-right: 10px;
+  }
+
+  li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
+
+  li a:hover {
+    background-color: #730b12;
+  }
+  marquee {
+    font-family: "Slackside One", cursive;
+    font-size: 50px;
+    padding: 0;
+  }
+  body {
+    width: 100%;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+  table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+</style>
+<body>
+  <header>
+    <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
+    <h1>BREAKDOWN BUDDY</h1>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="homepage.html">Home</a></li>
+      <li><a href="customer_requests.html">Requests</a></li>
+      <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+      <li><a href="contacts.html">Emergency Contacts</a></li>
+      <li><a href="about_us.html">About Us</a></li>
+    </ul>
+  </nav>
+  <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+  <h1>Customer Requests</h1><br>
+  <div class="container">
+    <h1>Incident Details</h1>
+        <!-- Table to display incident details -->
+        <table class="incident-table" id="incidentTable" >
+            <thead>
+                <tr>
+                    <th>Incident ID</th>
+                    <th>Customer ID</th>
+                    <th>Customer Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody >
+                <!-- Data will be populated here -->
+            </tbody>
+        </table>
+</div>
+
+
+  <script>
+  // Fetch incident details function
+function fetchIncidentDetails() {
+    // Use AJAX to retrieve incident details
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              //console.log( JSON.parse(xhr.response));
+                const incidentDetails = JSON.parse(xhr.responseText);
+                displayIncidentDetails(incidentDetails);
+            } else {
+                console.error('Error fetching incident details');
+            }
+        }
+    };
+
+    xhr.open('GET', 'customer_requests.php', true);
+    xhr.send();
+}
+
+// Display incident details in table format
+function displayIncidentDetails(incidentDetails) {
+    const incidentTableBody = document.querySelector('#incidentTable tbody');
+
+    incidentDetails.forEach(function(incident) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${incident.incident_id}</td>
+            <td>${incident.customer_id}</td>
+            <td>${incident.customer_name}</td>
+            <td>${incident.description}</td>
+
+            <!-- Add more table cells for additional columns if needed -->
+        `;
+        incidentTableBody.appendChild(row);
+    });
+}
+
+// Fetch incident details when the page loads
+window.onload = function() {
+    fetchIncidentDetails();
+};
+
+
+</script>
+</body>
+</html>
+
