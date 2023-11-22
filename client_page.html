@@ -278,15 +278,10 @@ function displayMechanics(mechanics) {
   resultDiv.innerHTML = '<h2>Closest Mechanics:</h2>'; // Clear existing content
 
   if (mechanics.length > 0) {
-    // Create a table header
-    let tableContent = '<table border="1"><tr><th>Company Name</th><th>Shop Name</th><th>City</th><th>Distance</th></tr>';
+    let tableContent = '<table border="1"><tr><th>Company Name</th><th>Shop Name</th><th>City</th><th>Distance</th><th>Action</th></tr>';
 
-    // Display each mechanic in the table and result div
     mechanics.forEach(mechanic => {
-      // Parse the distance as a float
       const distance = parseFloat(mechanic.distance);
-
-      // Check if distance is a valid number and convert it
       const formattedDistance = !isNaN(distance) ? distance.toFixed(2) + ' km' : 'N/A';
 
       tableContent += `
@@ -295,6 +290,7 @@ function displayMechanics(mechanics) {
           <td>${mechanic.shopName}</td>
           <td>${mechanic.city}</td>
           <td>${formattedDistance}</td>
+          <td><button onclick="requestAssistance(${mechanic.mechanic_id}, ${mechanic.latitude}, ${mechanic.longitude})">Request Assistance</button></td>
         </tr>
       `;
 
@@ -310,6 +306,42 @@ function displayMechanics(mechanics) {
 }
 
 
+  function requestAssistance(mechanicId, latitude, longitude) {
+  // Implement your logic to handle the request assistance action
+  console.log(`Request assistance for Mechanic ID: ${mechanicId}, Latitude: ${latitude}, Longitude: ${longitude}`);
+
+
+  // Prepare data for the POST request
+  // Prepare data for the POST request
+const requestData = {
+  mechanic_id: mechanicId,
+};
+
+// Send a POST request to save_incident.php
+fetch('save_incident.php', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(requestData)
+})
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+})
+.then(data => {
+  // Handle the JSON response
+})
+.catch(error => {
+  console.error('Error in the request to save_incident.php:', error);
+  // Handle the error, show a message, or perform other actions
+});
+
+
+
+}
 
     // Trigger the client location retrieval when the page loads
     getClientLocation();

@@ -25,10 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // echo "Client Latitude: " . $clientLatitude . ", Client Longitude: " . $clientLongitude;
 
         while ($row = $result->fetch_assoc()) {
-            // echo "Mechanic Latitude: " . $row['latitude'] . ", Mechanic Longitude: " . $row['longitude'];
-
-            // Capture each mechanic's data inside the loop
             $mechanics[] = array(
+                'mechanic_id' => $row['mechanic_id'],
                 'companyName' => $row['companyName'],
                 'state' => $row['state'],
                 'city' => $row['city'],
@@ -38,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'distance' => $row['distance']
             );
         }
+        
 
         // Set the Content-Type header to indicate JSON response
         header('Content-Type: application/json');

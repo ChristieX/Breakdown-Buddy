@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $sql = "INSERT INTO client_geolocation (latitude, longitude,customer_id) VALUES ('$latitude', '$longitude','$customer_id')";
   if ($conn->query($sql) === TRUE) {
+    $_SESSION['geolocation_id'] = $conn->insert_id;
     echo json_encode(array('status' => 'success', 'message' => 'Location data saved successfully'));
   } else {
     echo json_encode(array('status' => 'error', 'message' => 'Error saving location data: ' . $conn->error));
