@@ -1,7 +1,6 @@
 <?php
 // Include the database connection file
 include_once 'db_connect.php';
-include_once 'template.html';
 
 // Function to generate incident table based on status
 function generateIncidentTable($status, $result)
@@ -65,6 +64,7 @@ $resultDeclined = $conn->query($sqlDeclined);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="template.css">
     <title>Incident Tables</title>
     <style>
         table {
@@ -82,32 +82,85 @@ $resultDeclined = $conn->query($sqlDeclined);
         th {
             background-color: #f2f2f2;
         }
+        #accepted,
+        #requested,
+        #declined {
+            margin-top: 20px; /* Adjust margin top as needed */
+            border: 1px solid #ccc; /* Example border style */
+            padding: 10px; /* Example padding */
+            border-radius: 5px; /* Example border-radius */
+        }
+        div a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        div a:hover {
+            background-color: #45a049;
+        }
     </style>
+    <script>
+  // Function to toggle table visibility based on incident type
+  function toggleTable(incidentType) {
+    // Hide all incident tables
+    var incidentTables = document.getElementsByClassName('incident-table');
+    for (var i = 0; i < incidentTables.length; i++) {
+      incidentTables[i].style.display = 'none';
+    }
+
+    // Show the selected incident table
+    var selectedTable = document.getElementById(incidentType);
+    if (selectedTable) {
+      selectedTable.style.display = 'block';
+    }
+  }
+</script>
 </head>
 <body>
-
+<header>
+      <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
+      <h1>BREAKDOWN BUDDY</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="admintest.html">Home</a></li>
+        <li><a href="request_assistance.html">Request Assistance</a></li>
+        <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+        <li><a href="contacts.html">Emergency Contacts</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+      </ul>
+    </nav>
+    <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+    <br/><br/>
     <h2>Incident Tables</h2>
-
+    <br/>
     <!-- Navigation Index -->
     <div>
         <p><a href="#requested">Requested Incidents</a> | <a href="#accepted">Accepted Incidents</a> | <a href="#declined">Declined Incidents</a></p>
     </div>
-
+    <br/>
     <!-- Requested Incidents Table -->
     <div id="requested">
         <?php generateIncidentTable('Requested', $resultRequested); ?>
     </div>
-
+    <br/>
     <!-- Accepted Incidents Table -->
     <div id="accepted">
         <?php generateIncidentTable('Accepted', $resultAccepted); ?>
     </div>
-
+    <br/>
     <!-- Declined Incidents Table -->
     <div id="declined">
         <?php generateIncidentTable('Declined', $resultDeclined); ?>
     </div>
-
+    <br/>
     <?php
     // Close the database connection
     $conn->close();

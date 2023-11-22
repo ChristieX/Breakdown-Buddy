@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $row1['mechanic_id'];
 
             // Redirect based on mechanic status
-            if ($mechanic_status == 'pending' || $mechanic_status == 'disapproved') {
+            if ($mechanic_status == 'pending' || $mechanic_status == 'declined') {
                 echo '<script>alert("Mechanic login successful! Redirecting to waiting page."); window.location.href = "waiting.html";</script>';
             } else {
                 echo '<script>alert("Mechanic login successful! Redirecting to mechanic dashboard."); window.location.href = "mechanic_dashboard.php";</script>';

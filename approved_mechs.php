@@ -1,15 +1,14 @@
 <?php
 // Include the database connection file
 include_once 'db_connect.php';
-include_once 'template.html';
 
 // SQL query to retrieve approved mechanics' information with location
 $sql = "SELECT CONCAT_WS(' ', m.first_name, m.middle_name, m.last_name) AS mechanic_name,
                m.company_name, m.phone_number, m.email,
-               CONCAT_WS(', ', ma.streetName, ma.city, ma.state) AS location
+               CONCAT_WS(', ', ma.street, ma.city, ma.state) AS location
         FROM mechanic AS m
-        INNER JOIN mechanic_address AS ma ON m.mechanic_id = ma.mechanic_id
-        WHERE m.status = 'approve'";
+        INNER JOIN mechanic_address AS ma ON m.mechanic_id = ma.id
+        WHERE m.status = 'accepted'";
 
 // Execute the query
 $result = $conn->query($sql);
@@ -20,6 +19,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="template.css">
     <title>Approved Mechanics</title>
     <style>
         table {
@@ -39,9 +39,23 @@ $result = $conn->query($sql);
     </style>
 </head>
 <body>
-
+<header>
+      <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
+      <h1>BREAKDOWN BUDDY</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="admintest.html">Home</a></li>
+        <li><a href="request_assistance.html">Request Assistance</a></li>
+        <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+        <li><a href="contacts.html">Emergency Contacts</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+      </ul>
+    </nav>
+    <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+    <br /><br>
     <h2>Approved Mechanics</h2>
-
+    <br/>
     <?php
     // Check if there are rows returned from the query
     if ($result->num_rows > 0) {
