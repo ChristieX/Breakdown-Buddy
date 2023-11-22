@@ -121,7 +121,7 @@
       <li><a href="about_us.html">About Us</a></li>
     </ul>
   </nav>
-  <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+  <marquee>~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~</marquee>
   <main>
     <h2>Client Geolocation</h2>
     <p>Click the button below to use your geolocation:</p>
@@ -148,49 +148,60 @@
   let requestData; // Declare requestData globally
   let locationBtn; // Declare locationBtn globally
 
-  // Function to initialize the Leaflet map with the client's location
-  function initializeMap() {
-    map = L.map('map').setView([clientLatitude, clientLongitude], 15);
+// ... (your existing code)
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+// Function to initialize the Leaflet map with the client's location
+function initializeMap() {
+  map = L.map('map').setView([clientLatitude, clientLongitude], 15);
 
-    // Place a marker on the map for the client's location
-    L.marker([clientLatitude, clientLongitude]).addTo(map)
-      .bindPopup("Your Location")
-      .openPopup();
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
 
-    // Send the latitude and longitude data to the server to store it in the database
-    requestData = {
-      latitude: clientLatitude,
-      longitude: clientLongitude
-    };
+  // Place a marker on the map for the client's location
+  L.marker([clientLatitude, clientLongitude]).addTo(map)
+    .bindPopup("Your Location")
+    .openPopup();
 
-    fetch('save_location.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestData)
+  // Send the latitude and longitude data to the server to store it in the database
+  requestData = {
+    latitude: clientLatitude,
+    longitude: clientLongitude
+  };
+
+  fetch('save_location.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestData)
+  })
+    .then(response => response.text())  // Change this line to response.text()
+    .then(data => {
+      console.log(data);  // Log the response
+
+      // Check if the response contains an error
+      if (data.includes('error')) {
+        throw new Error(data);  // Throw an error to trigger the catch block
+      }
+
+      locationBtn.innerHTML = 'Location Saved';
+
+      // Update requestData and fetch closest mechanics
+      requestData = {
+        latitude: clientLatitude,
+        longitude: clientLongitude
+      };
+      fetchClosestMechanics();
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        locationBtn.innerHTML = 'Location Saved';
+    .catch(error => {
+      console.error('Error saving location:', error);
+      locationBtn.innerHTML = 'Error Locating';
+    });
+}
 
-        // Update requestData and fetch closest mechanics
-        requestData = {
-          latitude: clientLatitude,
-          longitude: clientLongitude
-        };
-        fetchClosestMechanics();
-      })
-      .catch(error => {
-        console.error('Error saving location:', error);
-        locationBtn.innerHTML = 'Error Locating';
-      });
-  }
+// ... (your existing code)
+
 
   // Function to get client's geolocation and display on a Leaflet map
   function getClientLocation() {
