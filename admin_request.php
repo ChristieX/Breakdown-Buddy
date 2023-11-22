@@ -69,8 +69,8 @@ if ($result) {
         echo "<td>{$row['status']}</td>";
         echo "<td><button onclick=\"showImage('{$row['mechanic_id']}')\">Show License</button></td>";
         echo "<td>";
-        echo "<button onclick=\"updateStatus('{$row['mechanic_id']}', 'approve')\">Approve</button>";
-        echo "<button onclick=\"updateStatus('{$row['mechanic_id']}', 'disapprove')\">Disapprove</button>";
+        echo "<button onclick=\"updateStatus('{$row['mechanic_id']}', 'accepted')\">Accept</button>";
+        echo "<button onclick=\"updateStatus('{$row['mechanic_id']}', 'declined')\">Decline</button>";
         echo "</td>";
         echo "</tr>";
         echo "<tr class='hidden-image' id='image-{$row['mechanic_id']}'>";

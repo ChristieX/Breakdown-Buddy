@@ -2,15 +2,17 @@
 // Include the database connection file
 include_once 'db_connect.php';
 
+// Start a session
+session_start();
+
 // Check if the login form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve user input from the form
     $username = $_POST['login-username'];
     $password = $_POST['login-password'];
 
-    // SQL query to retrieve hashed password based on the username for mechanic
+    // SQL query to retrieve user information based on the username
     $mechanic_query = "SELECT * FROM mechanic WHERE username = '$username'";
-    // SQL query to retrieve hashed password based on the username for customer
     $customer_query = "SELECT * FROM customer WHERE username = '$username'";
 
     // Execute the queries
@@ -27,11 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Passwords match, check mechanic status
             $mechanic_status = $row1['status'];
 
+            // Store mechanic_id in the session variable
+            $_SESSION['user_id'] = $row1['mechanic_id'];
+
             // Redirect based on mechanic status
             if ($mechanic_status == 'pending' || $mechanic_status == 'disapproved') {
                 echo '<script>alert("Mechanic login successful! Redirecting to waiting page."); window.location.href = "waiting.html";</script>';
             } else {
-                echo '<script>alert("Mechanic login successful! Redirecting to mechanic dashboard."); window.location.href = "mechanic_profile.html";</script>';
+                echo '<script>alert("Mechanic login successful! Redirecting to mechanic dashboard."); window.location.href = "mechanic_dashboard.php";</script>';
             }
         } else {
             // Incorrect password for mechanic
@@ -45,6 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Verify the entered password with the stored hashed password
         if (password_verify($password, $row2['password'])) {
             // Passwords match, perform login actions for customer
+
+            // Store customer_id in the session variable
+            $_SESSION['user_id'] = $row2['customer_id'];
+
             echo '<script>alert("Customer login successful! Redirecting to customer dashboard."); window.location.href = "homepage.html";</script>';
         } else {
             // Incorrect password for customer

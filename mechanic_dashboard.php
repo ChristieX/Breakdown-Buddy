@@ -18,55 +18,59 @@ if (isset($_POST['disapprove'])) {
     $conn->query($update_status_query);
 }
 
-// SQL query to retrieve incident information and customer names for mechanics with status 'requested' or geolocation_id is present
-$sql = "SELECT incident.incident_id, incident.description, incident.location, incident.status, incident.geolocation_id, CONCAT_WS(' ', customer.name_first, customer.name_middle, customer.name_last) AS customer_name
-        FROM incident
-        INNER JOIN customer ON incident.customer_id = customer.user_id
-        WHERE incident.status = 'requested' OR incident.geolocation_id IS NOT NULL";
+// Check if the user is logged in and get their user_id from the session variable
+session_start();
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 
-// Execute the query
-$result = $conn->query($sql);
-?>
+    // SQL query to retrieve incident information for the logged-in mechanic with status 'requested' or geolocation_id is present
+    $sql = "SELECT incident.incident_id, incident.description, incident.location, incident.status, incident.geolocation_id, CONCAT_WS(' ', customer.name_first, customer.name_middle, customer.name_last) AS customer_name
+            FROM incident
+            INNER JOIN customer ON incident.customer_id = customer.user_id
+            WHERE (incident.status = 'requested' OR incident.geolocation_id IS NOT NULL) AND incident.mechanic_id = $user_id";
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incident Table</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+    // Execute the query
+    $result = $conn->query($sql);
 
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+    // Output the HTML
+    echo "<!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Incident Table</title>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
 
-        th {
-            background-color: #f2f2f2;
-        }
+            th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
 
-        /* Style for the "View Location" button */
-        button.view-location {
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
+            th {
+                background-color: #f2f2f2;
+            }
 
-    <h2>Incident Table</h2>
+            /* Style for the 'View Location' button */
+            button.view-location {
+                padding: 5px 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 3px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
 
-    <?php
+        <h2>Incident Table</h2>";
+
     // Check if there are rows returned from the query
     if ($result->num_rows > 0) {
         // Output the table header
@@ -86,7 +90,7 @@ $result = $conn->query($sql);
                     <td>{$row['description']}</td>
                     <td>{$row['location']}";
 
-            // Add a "View Location" button if geolocation_id is present
+            // Add a 'View Location' button if geolocation_id is present
             if (!empty($row['geolocation_id'])) {
                 echo "<button class='view-location' type='button'><a href='view_location.php?incident_id={$row['incident_id']}'>View Location</a></button>";
             }
@@ -106,12 +110,15 @@ $result = $conn->query($sql);
 
         echo "</table>";
     } else {
-        echo "No incident found.";
+        echo "No incident found for the logged-in mechanic.";
     }
 
     // Close the database connection
     $conn->close();
-    ?>
 
-</body>
-</html>
+    echo "</body>
+    </html>";
+} else {
+    echo "User not logged in.";
+}
+?>

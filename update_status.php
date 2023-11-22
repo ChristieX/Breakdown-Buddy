@@ -5,7 +5,7 @@ include('db_connect.php');
 $mechanicId = isset($_GET['mechanic_id']) ? $_GET['mechanic_id'] : null;
 $status = isset($_GET['status']) ? $_GET['status'] : null;
 
-if ($mechanicId && ($status == 'approve' || $status == 'disapprove')) {
+if ($mechanicId && ($status == 'accepted' || $status == 'declined')) {
     $sql = "UPDATE mechanic SET status = '$status' WHERE mechanic_id = $mechanicId";
     $result = mysqli_query($conn, $sql);
 
