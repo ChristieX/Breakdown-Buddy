@@ -18,11 +18,11 @@ if (isset($_POST['disapprove'])) {
     $conn->query($update_status_query);
 }
 
-// SQL query to retrieve incident information and customer names for mechanics with status 'requested'
-$sql = "SELECT incident.incident_id, incident.description, incident.location, incident.status, CONCAT_WS(' ', customer.name_first, customer.name_middle, customer.name_last) AS customer_name
+// SQL query to retrieve incident information and customer names for mechanics with status 'requested' or geolocation_id is present
+$sql = "SELECT incident.incident_id, incident.description, incident.location, incident.status, incident.geolocation_id, CONCAT_WS(' ', customer.name_first, customer.name_middle, customer.name_last) AS customer_name
         FROM incident
         INNER JOIN customer ON incident.customer_id = customer.user_id
-        WHERE incident.status = 'requested'";
+        WHERE incident.status = 'requested' OR incident.geolocation_id IS NOT NULL";
 
 // Execute the query
 $result = $conn->query($sql);
@@ -49,6 +49,17 @@ $result = $conn->query($sql);
         th {
             background-color: #f2f2f2;
         }
+
+        /* Style for the "View Location" button */
+        button.view-location {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -73,7 +84,14 @@ $result = $conn->query($sql);
             echo "<form method='post'>";
             echo "<tr>
                     <td>{$row['description']}</td>
-                    <td>{$row['location']}</td>
+                    <td>{$row['location']}";
+
+            // Add a "View Location" button if geolocation_id is present
+            if (!empty($row['geolocation_id'])) {
+                echo "<button class='view-location' type='button'><a href='view_location.php?incident_id={$row['incident_id']}'>View Location</a></button>";
+            }
+
+            echo "</td>
                     <td>{$row['customer_name']}</td>
                     <td>{$row['status']}</td>
                     <td>";
