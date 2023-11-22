@@ -1,8 +1,6 @@
 <?php
 // Include the database connection file
 include_once 'db_connect.php';
-include_once 'template.html';
-
 // Function to generate incident table based on status
 function generateIncidentTable($status, $result)
 {
@@ -65,6 +63,7 @@ $resultDeclined = $conn->query($sqlDeclined);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="template.css">
     <title>Incident Tables</title>
     <style>
         table {
@@ -85,6 +84,21 @@ $resultDeclined = $conn->query($sqlDeclined);
     </style>
 </head>
 <body>
+<header>
+      <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
+      <h1>BREAKDOWN BUDDY</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="mechanic_dashboard.php">Home</a></li>
+        <li><a href="request_assistance.html">Request Assistance</a></li>
+        <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+        <li><a href="contacts.html">Emergency Contacts</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+      </ul>
+    </nav>
+    <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
+    <br /><br>
 
     <h2>Incident Tables</h2>
 
