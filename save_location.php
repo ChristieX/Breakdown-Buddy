@@ -1,5 +1,7 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Check if the request is a POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Get the JSON data from the request body
