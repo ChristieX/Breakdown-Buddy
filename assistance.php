@@ -1,4 +1,5 @@
 <?php
+include('template.html');
 // Start or resume a session
 session_start();
 include('db_connect.php');
