@@ -44,14 +44,14 @@ $sqlAccepted = "SELECT incident.incident_id, incident.description, incident.loca
         FROM incident
         LEFT JOIN mechanic ON incident.mechanic_id = mechanic.mechanic_id
         LEFT JOIN customer ON incident.customer_id = customer.user_id
-        WHERE incident.status = 'Accepted'";
+        WHERE incident.status = 'approved'";
 
 // SQL query to retrieve incidents with status 'Declined'
 $sqlDeclined = "SELECT incident.incident_id, incident.description, incident.location, incident.status, CONCAT_WS(' ', mechanic.first_name, mechanic.middle_name, mechanic.last_name) AS mechanic_name, CONCAT_WS(' ', customer.name_first, customer.name_middle, customer.name_last) AS customer_name
         FROM incident
         LEFT JOIN mechanic ON incident.mechanic_id = mechanic.mechanic_id
         LEFT JOIN customer ON incident.customer_id = customer.user_id
-        WHERE incident.status = 'Declined'";
+        WHERE incident.status = 'disapproved'";
 
 // Execute the queries
 $resultRequested = $conn->query($sqlRequested);

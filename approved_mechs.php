@@ -5,10 +5,10 @@ include_once 'db_connect.php';
 // SQL query to retrieve approved mechanics' information with location
 $sql = "SELECT CONCAT_WS(' ', m.first_name, m.middle_name, m.last_name) AS mechanic_name,
                m.company_name, m.phone_number, m.email,
-               CONCAT_WS(', ', ma.street, ma.city, ma.state) AS location
+               CONCAT_WS(', ', ma.streetName, ma.city, ma.state) AS location
         FROM mechanic AS m
-        INNER JOIN mechanic_address AS ma ON m.mechanic_id = ma.id
-        WHERE m.status = 'accepted'";
+        INNER JOIN mechanic_address AS ma ON m.mechanic_id = ma.mechanic_id
+        WHERE m.status = 'approved'";
 
 // Execute the query
 $result = $conn->query($sql);

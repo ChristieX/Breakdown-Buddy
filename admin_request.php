@@ -77,7 +77,7 @@
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     // Reload the page after the status is updated
-                    location.reload();
+                    window.location.href = window.location.href;
                 }
             };
             xhttp.open("GET", "update_status.php?mechanic_id=" + mechanicId + "&status=" + status, true);
@@ -108,7 +108,7 @@
 include('db_connect.php');
 
 // Query to select mechanics with status 'pending'
-$query = "SELECT mechanic_id, CONCAT_WS(' ', first_name, middle_name, last_name) AS full_name, status, working_license FROM mechanic WHERE status = 'pending'";
+$query = "SELECT mechanic_id, CONCAT_WS(' ', first_name, middle_name, last_name) AS full_name, status, working_license, phone_number, employment_history FROM mechanic WHERE status = 'pending'";
 
 // Execute the query
 $result = mysqli_query($conn, $query);
@@ -117,21 +117,23 @@ $result = mysqli_query($conn, $query);
 if ($result) {
     // Display the results in a table
     echo "<table>";
-    echo "<tr><th>Mechanic ID</th><th>Name</th><th>Status</th><th>License</th><th>Action</th></tr>";
+    echo "<tr><th>Mechanic ID</th><th>Name</th><th>Status</th><th>Phone Number</th><th>Employment History</th><th>License</th><th>Action</th></tr>";
 
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
         echo "<td>{$row['mechanic_id']}</td>";
         echo "<td>{$row['full_name']}</td>";
         echo "<td>{$row['status']}</td>";
+        echo "<td>{$row['phone_number']}</td>";
+        echo "<td>{$row['employment_history']}</td>";
         echo "<td><button class='show_license'  onclick=\"showImage('{$row['mechanic_id']}')\">Show License</button></td>";
         echo "<td>";
-        echo "<button class='approve-btn'  onclick=\"updateStatus('{$row['mechanic_id']}', 'accepted')\">Accept</button>";
-        echo "<button class='disapprove-btn' onclick=\"updateStatus('{$row['mechanic_id']}', 'declined')\">Decline</button>";
+        echo "<button class='approve-btn'  onclick=\"updateStatus('{$row['mechanic_id']}', 'approved')\">approve</button>";
+        echo "<button class='disapprove-btn' onclick=\"updateStatus('{$row['mechanic_id']}', 'disapproved')\">disapprove</button>";
         echo "</td>";
         echo "</tr>";
         echo "<tr class='hidden-image' id='image-{$row['mechanic_id']}'>";
-        echo "<td colspan='5'>";
+        echo "<td colspan='7'>";
         echo "<img src='display_image.php?image_id={$row['mechanic_id']}' alt='Mechanic License'>";
         echo "</td>";
         echo "</tr>";
@@ -148,8 +150,6 @@ if ($result) {
 
 // Close the database connection
 mysqli_close($conn);
-
 ?>
-
 </body>
 </html>

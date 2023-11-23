@@ -14,10 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // SQL query to retrieve user information based on the username
     $mechanic_query = "SELECT * FROM mechanic WHERE username = '$username'";
     $customer_query = "SELECT * FROM customer WHERE username = '$username'";
+    $admin_query = "SELECT * FROM admin WHERE username = '$username'";
 
     // Execute the queries
     $mechanic_result = $conn->query($mechanic_query);
     $customer_result = $conn->query($customer_query);
+    $admin_result = $conn->query($admin_query);
 
     // Check if a matching user is found in the mechanic table
     if ($mechanic_result->num_rows > 0) {
@@ -33,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $row1['mechanic_id'];
 
             // Redirect based on mechanic status
-            if ($mechanic_status == 'pending' || $mechanic_status == 'declined') {
-                echo '<script>alert("Mechanic login successful! Redirecting to waiting page."); window.location.href = "waiting.html";</script>';
+            if ($mechanic_status == 'pending' || $mechanic_status == 'disapproved') {
+                echo '<script> window.location.href = "waiting.php";</script>';
             } else {
                 echo '<script>alert("Mechanic login successful! Redirecting to mechanic dashboard."); window.location.href = "mechanic_dashboard.php";</script>';
             }
@@ -58,6 +60,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             // Incorrect password for customer
             echo '<script>alert("Invalid password for customer."); window.location.href = "login.html";</script>';
+        }
+    }elseif ($admin_result->num_rows > 0) {
+        $row3 = $admin_result->fetch_assoc();
+
+        if ($password == $row3['password']) {
+            // Passwords match, perform login actions for customer
+
+            $_SESSION['user_id'] = $row3['admin_id'];
+
+            echo '<script>alert("admin login successful! Redirecting to admin dashboard. "); window.location.href = "admintest.php";</script>';
+        } else {
+            // Incorrect password for customer
+            echo '<script>alert("Invalid password for admin."); window.location.href = "login.html";</script>';
         }
     } else {
         // No matching user found in either table

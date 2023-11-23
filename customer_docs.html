@@ -3,7 +3,6 @@
   <head>
     <title>Vehicle Breakdown Documentation</title>
     <style>
-      
       body {
         background-color: rgba(0, 0, 0, 0.855);
         color: #000000;
@@ -33,6 +32,7 @@
       }
 
       input[type="text"],
+      input[type="file"],
       input[type="submit"] {
         width: 95%;
         padding: 10px;
@@ -61,28 +61,60 @@
       <div class="form-container">
         <h1>Customer Vehicle Breakdown Documentation</h1>
         <form action="customer_docs.php" method="post">
-           <label for="driving_license">Driving License:</label>
+          <label for="first_name">First Name:</label>
           <input
-            type="file"
-            id="driving_license"
-            name="driving_license";
-          /> 
+            type="text"
+            id="first_name"
+            name="name_first"
+            required
+          />
           <br><br>
+
+          <label for="middle_name">Middle Name:</label>
+          <input
+            type="text"
+            id="middle_name"
+            name="name_middle"
+          />
+          <br><br>
+
+          <label for="last_name">Last Name:</label>
+          <input
+            type="text"
+            id="last_name"
+            name="name_last"
+            required
+          />
+          <br><br>
+
+          <label for="phone_number">Phone Number:</label>
+          <input
+            type="text"
+            id="phone_number"
+            name="phone_number"
+            required
+          />
           <br><br>
           <label for="vehicle_number">Vehicle Number:</label>
           <input
-            type="text"
-            id="vehicle_number"
-            name="vehicle_number"
-            required
+          type="text"
+          id="vehicle_number"
+          name="vehicle_number"
+          required
           />
 
+          <br><br>
+          
+          <label for="driving_license">Driving License:</label>
+          <input
+            type="file"
+            id="driving_license"
+            name="driving_license"
+          /> 
+          
           <input type="submit" value="Submit" id="SubmitBtn"/>
         </form>
       </div>
     </div>
   </body>
-
-
-  </script>
 </html>

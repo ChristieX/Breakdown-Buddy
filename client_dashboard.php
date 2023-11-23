@@ -70,21 +70,34 @@
         th {
             background-color: #f2f2f2;
         }
+        .button{
+      top: 2%;
+      right: 1%;
+      position: absolute;
+      background: linear-gradient(to right, #ae474d, #780000);
+      color: #fff;
+      border-radius: 30px;
+      padding: 10px 30px;
+      cursor: pointer;
+      display: block;
+      transition-duration: 0.5s;
+      border: 0;
+      outline: none;}
     </style>
 </head>
 <body>
-
     <header>
-        <h1>Client Dashboard</h1>
+        <button class="button" onclick="window.location.href = 'login.html';">Logout</button>
+        <h1>BREAKDOWN BUDDY</h1>
     </header>
 
     <nav>
         <ul>
-            <li><a href="client_dashboard.php">Dashboard</a></li>
+            <li><a href="homepage.html">Home</a></li>
             <li><a href="request_assistance.html">Request Assistance</a></li>
-            <li><a href="incident_history.php">Incident History</a></li>
-            <li><a href="profile.php">Profile</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="assistance_guides1.html">Assistant Guides</a></li>
+            <li><a href="contacts.html">Emergency Contacts</a></li>
+            <li><a href="about_us.html">About Us</a></li>
         </ul>
     </nav>
 
@@ -94,15 +107,20 @@
         <?php
         // Include the database connection file
         include_once 'db_connect.php';
-        
+
         // Check if the user is logged in and get their user_id from the session variable
         session_start();
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
 
-            // SQL query to retrieve incident information for the logged-in client
-            $sql = "SELECT * FROM incident WHERE customer_id = $user_id";
-            
+            // SQL query to retrieve incident information for the logged-in client with mechanic's name
+            $sql = "SELECT incident.incident_id, incident.description, incident.location, incident.status,
+                           CONCAT_WS(' ', mechanic.first_name, mechanic.middle_name, mechanic.last_name) AS mechanic_name
+                    FROM incident
+                    LEFT JOIN mechanic ON incident.mechanic_id = mechanic.mechanic_id
+                    WHERE incident.customer_id = $user_id
+                    ORDER BY incident.incident_id DESC";
+
             // Execute the query
             $result = $conn->query($sql);
 
@@ -112,6 +130,7 @@
                 echo "<table>
                         <tr>
                             <th>Incident ID</th>
+                            <th>Mechanic Name</th>
                             <th>Description</th>
                             <th>Location</th>
                             <th>Status</th>
@@ -121,6 +140,7 @@
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
                             <td>{$row['incident_id']}</td>
+                            <td>{$row['mechanic_name']}</td>
                             <td>{$row['description']}</td>
                             <td>{$row['location']}</td>
                             <td>{$row['status']}</td>
@@ -138,8 +158,6 @@
             echo "User not logged in.";
         }
         ?>
-
     </main>
-
 </body>
 </html>

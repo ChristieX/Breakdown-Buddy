@@ -11,13 +11,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // TODO: Validate and sanitize the data
 
     // Use the Haversine formula to calculate distances and get closest mechanics
-    $sql = "SELECT *, 
-        (6371 * acos(cos(radians($clientLatitude)) * cos(radians(mechanic_address.latitude)) * cos(radians(mechanic_address.longitude) - radians($clientLongitude)) + sin(radians($clientLatitude)) * sin(radians(mechanic_address.latitude))))
+    $sql = "SELECT ma.*, 
+        (6371 * acos(cos(radians($clientLatitude)) * cos(radians(ma.latitude)) * cos(radians(ma.longitude) - radians($clientLongitude)) + sin(radians($clientLatitude)) * sin(radians(ma.latitude))))
         AS distance
-        FROM mechanic_address
+        FROM mechanic_address ma
+        INNER JOIN mechanic m ON ma.mechanic_id = m.mechanic_id
+        WHERE m.status = 'approved'
         ORDER BY distance ASC";
 
-    $result = $conn->query($sql);
+$result = $conn->query($sql);
 
     if ($result) {
         $mechanics = array();

@@ -5,14 +5,16 @@ session_start();
 include('db_connect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Collect form data
     $username = $_SESSION['username'];   
     $first_name = $_POST["first_name"];
+    $middle_name = $_POST["middle_name"];
     $last_name = $_POST["last_name"];
+    $company_name = $_POST["company_name"];
     $address_state = ucfirst($_POST["address_state"]);
     $address_street = ucfirst($_POST["address_street"]);
     $address_city = ucfirst($_POST["address_city"]);
     $contact_number = $_POST["contact_number"];
-    $email = $_POST["email"];
     $employment_history = $_POST["employment_history"];
 
     $working_license = $_FILES['working_license']['tmp_name'];
@@ -40,13 +42,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // SQL query to update data in the mechanic table
             $sql_mechanic = "UPDATE mechanic SET 
-            first_name='$first_name',
-            last_name='$last_name',
-            phone_number='$contact_number',
-            email='$email',
-            working_license= '$imgContent1',
-            proof_of_identity='$imgContent2'
-            WHERE username='$username'";
+                first_name='$first_name',
+                middle_name='$middle_name',
+                last_name='$last_name',
+                company_name='$company_name',
+                phone_number='$contact_number',
+                working_license='$imgContent1',
+                proof_of_identity='$imgContent2',
+                employment_history='$employment_history'
+                WHERE username='$username'";
 
             // Execute the main query
             if ($conn->query($sql_mechanic) === TRUE) {
@@ -58,16 +62,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($check_result->num_rows > 0) {
                     // Update the existing record
                     $sql_mechanic_address = "UPDATE mechanic_address SET 
-                    state='$address_state',
-                    city='$address_city',
-                    streetName='$address_street',
-                    latitude='$latitude',
-                    longitude='$longitude'
-                    WHERE mechanic_id='$mechanic_id'";
+                        state='$address_state',
+                        city='$address_city',
+                        streetName='$address_street',
+                        latitude='$latitude',
+                        longitude='$longitude'
+                        WHERE mechanic_id='$mechanic_id'";
                 } else {
                     // Insert a new record
                     $sql_mechanic_address = "INSERT INTO mechanic_address (mechanic_id, state, city, streetName, latitude, longitude) 
-                    VALUES ('$mechanic_id','$address_state','$address_city','$address_street', '$latitude', '$longitude')";
+                    VALUES ('$mechanic_id', '$address_state', '$address_city', '$address_street', '$latitude', '$longitude')";
+
                 }
 
                 if ($conn->query($sql_mechanic_address) === TRUE) {
@@ -79,8 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $mechanic_status = $row['status'];
 
                         // Redirect based on mechanic status
-                        if ($mechanic_status == 'pending' || $mechanic_status == 'disapprove') {
-                            header("Location: waiting.html");
+                        if ($mechanic_status == 'pending' || $mechanic_status == 'disapproved') {
+                            header("Location: waiting.php");
                             exit();
                         } else {
                             header("Location: homepage.html");
@@ -102,5 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error in geocode request. HTTP Status: $geocodeResponseStatus";
     }
 }
+
 $conn->close();
 ?>

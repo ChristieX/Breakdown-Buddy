@@ -1,13 +1,17 @@
 <?php
 include('db_connect.php');
 
-// Fetch data from the mechanic_address table based on search criteria
+// Fetch data from the mechanic table based on search criteria
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
-$sql = "SELECT mechanic_id, companyName,streetName, city, state FROM mechanic_address WHERE 
-        companyName LIKE '%$search%' OR 
-        streetName LIKE '%$search%' OR 
-        city LIKE '%$search%' OR 
-        state LIKE '%$search%'";
+
+$sql = "SELECT m.mechanic_id, m.company_name, m.phone_number, ma.streetName, ma.city, ma.state 
+        FROM mechanic m
+        INNER JOIN mechanic_address ma ON m.mechanic_id = ma.mechanic_id
+        WHERE (m.company_name LIKE '%$search%' OR 
+               ma.streetName LIKE '%$search%' OR 
+               ma.city LIKE '%$search%' OR 
+               ma.state LIKE '%$search%')
+               AND m.status = 'approved'";
 
 $result = $conn->query($sql);
 
@@ -28,8 +32,8 @@ if ($result->num_rows > 0) {
         $location = $row['streetName'] . ', ' . $row['city'] . ', ' . $row['state'];
         
         echo "<tr>
-                <td>" . $row['companyName'] . "</td>
-                <td></td>
+                <td>" . $row['company_name'] . "</td>
+                <td>" . $row['phone_number'] . "</td>
                 <td>" . $location . "</td>
                 <td><button data-mechanic-id='" . $row['mechanic_id'] . "' onclick='requestAssistance(" . $row['mechanic_id'] . ")'>Request</button></td>
               </tr>";
