@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Passwords match, perform login actions for customer
 
             // Store customer_id in the session variable
-            $_SESSION['user_id'] = $row2['customer_id'];
+            $_SESSION['user_id'] = $row2['user_id'];
 
             echo '<script>alert("Customer login successful! Redirecting to customer dashboard."); window.location.href = "homepage.html";</script>';
         } else {
