@@ -1,0 +1,71 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    
+  }
+  header {
+    background-color: #780000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  h1 {
+    margin: 0;
+  }
+  header h1 {
+    font-family: "Cherry Bomb One", cursive;
+  }
+  .button{
+    top: 2%;
+    right: 1%;
+    position: absolute;
+    background: linear-gradient(to right, #ae474d, #780000);
+    color: #fff;
+    border-radius: 30px;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    transition-duration: 0.5s;
+    border: 0;
+    outline: none;
+  }
+  nav {
+    background-color: #c1121f;
+    padding: 10px;
+    position: sticky;
+    width: 100%;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: inline;
+    margin-right: 10px;
+  }
+
+  li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
+
+  li a:hover {
+    background-color: #730b12;
+  }
+  marquee {
+    font-family: "Slackside One", cursive;
+    font-size: 50px;
+    padding: 0;
+  }
+  body {
+    width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }

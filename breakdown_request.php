@@ -1,6 +1,7 @@
 <?php
 // Include the database connection file
 include_once 'db_connect.php';
+
 // Function to generate incident table based on status
 function generateIncidentTable($status, $result)
 {
@@ -43,14 +44,14 @@ $sqlAccepted = "SELECT incident.incident_id, incident.description, incident.loca
         FROM incident
         LEFT JOIN mechanic ON incident.mechanic_id = mechanic.mechanic_id
         LEFT JOIN customer ON incident.customer_id = customer.user_id
-        WHERE incident.status = 'accepted'";
+        WHERE incident.status = 'Accepted'";
 
 // SQL query to retrieve incidents with status 'Declined'
 $sqlDeclined = "SELECT incident.incident_id, incident.description, incident.location, incident.status, CONCAT_WS(' ', mechanic.first_name, mechanic.middle_name, mechanic.last_name) AS mechanic_name, CONCAT_WS(' ', customer.name_first, customer.name_middle, customer.name_last) AS customer_name
         FROM incident
         LEFT JOIN mechanic ON incident.mechanic_id = mechanic.mechanic_id
         LEFT JOIN customer ON incident.customer_id = customer.user_id
-        WHERE incident.status = 'declined'";
+        WHERE incident.status = 'Declined'";
 
 // Execute the queries
 $resultRequested = $conn->query($sqlRequested);
@@ -81,7 +82,46 @@ $resultDeclined = $conn->query($sqlDeclined);
         th {
             background-color: #f2f2f2;
         }
+        #accepted,
+        #requested,
+        #declined {
+            margin-top: 20px; /* Adjust margin top as needed */
+            border: 1px solid #ccc; /* Example border style */
+            padding: 10px; /* Example padding */
+            border-radius: 5px; /* Example border-radius */
+        }
+        div a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        div a:hover {
+            background-color: #45a049;
+        }
     </style>
+    <script>
+  // Function to toggle table visibility based on incident type
+  function toggleTable(incidentType) {
+    // Hide all incident tables
+    var incidentTables = document.getElementsByClassName('incident-table');
+    for (var i = 0; i < incidentTables.length; i++) {
+      incidentTables[i].style.display = 'none';
+    }
+
+    // Show the selected incident table
+    var selectedTable = document.getElementById(incidentType);
+    if (selectedTable) {
+      selectedTable.style.display = 'block';
+    }
+  }
+</script>
 </head>
 <body>
 <header>
@@ -90,7 +130,7 @@ $resultDeclined = $conn->query($sqlDeclined);
     </header>
     <nav>
       <ul>
-        <li><a href="mechanic_dashboard.php">Home</a></li>
+        <li><a href="admintest.html">Home</a></li>
         <li><a href="request_assistance.html">Request Assistance</a></li>
         <li><a href="assistance_guides1.html">Assistant Guides</a></li>
         <li><a href="contacts.html">Emergency Contacts</a></li>
@@ -98,24 +138,29 @@ $resultDeclined = $conn->query($sqlDeclined);
       </ul>
     </nav>
     <marquee>~~RELIABLE HELP FOR UNRELIABLE BREAKDOWNS~~</marquee>
-    <br /><br>
-
+    <br/><br/>
     <h2>Incident Tables</h2>
-
+    <br/>
     <!-- Navigation Index -->
     <div>
         <p><a href="#requested">Requested Incidents</a> | <a href="#accepted">Accepted Incidents</a> | <a href="#declined">Declined Incidents</a></p>
     </div>
-
+    <br/>
     <!-- Requested Incidents Table -->
-    <?php generateIncidentTable('Requested', $resultRequested); ?>
-
+    <div id="requested">
+        <?php generateIncidentTable('Requested', $resultRequested); ?>
+    </div>
+    <br/>
     <!-- Accepted Incidents Table -->
-    <?php generateIncidentTable('Accepted', $resultAccepted); ?>
-
+    <div id="accepted">
+        <?php generateIncidentTable('Accepted', $resultAccepted); ?>
+    </div>
+    <br/>
     <!-- Declined Incidents Table -->
-    <?php generateIncidentTable('Declined', $resultDeclined); ?>
-
+    <div id="declined">
+        <?php generateIncidentTable('Declined', $resultDeclined); ?>
+    </div>
+    <br/>
     <?php
     // Close the database connection
     $conn->close();

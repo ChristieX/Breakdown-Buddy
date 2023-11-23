@@ -8,9 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_SESSION['username'];   
     $first_name = $_POST["first_name"];
     $last_name = $_POST["last_name"];
-    $address_state = $_POST["address_state"];
-    $address_street = $_POST["address_street"];
-    $address_city = $_POST["address_city"];
+    $address_state = ucfirst($_POST["address_state"]);
+    $address_street = ucfirst($_POST["address_street"]);
+    $address_city = ucfirst($_POST["address_city"]);
     $contact_number = $_POST["contact_number"];
     $email = $_POST["email"];
     $employment_history = $_POST["employment_history"];
